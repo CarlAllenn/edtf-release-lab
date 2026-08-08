@@ -64,7 +64,7 @@ jobs:
           MISE_CONFIG_FILE: ${{ github.workspace }}/rustup-repro/mise.toml
           REPOINT_CARGO_HOME: "yes"
           UNSET_RUSTUP_ENV: "no"
-        run: .github/scripts/probe.sh
+        run: bash .github/scripts/probe.sh
 
   no-repoint:
     name: "B — block + rustup env, CARGO_HOME left alone"
@@ -109,7 +109,7 @@ jobs:
           MISE_CONFIG_FILE: ${{ github.workspace }}/rustup-repro/mise.toml
           REPOINT_CARGO_HOME: "no"
           UNSET_RUSTUP_ENV: "no"
-        run: .github/scripts/probe.sh
+        run: bash .github/scripts/probe.sh
 
   no-rustup-env:
     name: "C — block + empty CARGO_HOME, RUSTUP_* unset"
@@ -154,7 +154,7 @@ jobs:
           MISE_CONFIG_FILE: ${{ github.workspace }}/rustup-repro/mise.toml
           REPOINT_CARGO_HOME: "yes"
           UNSET_RUSTUP_ENV: "yes"
-        run: .github/scripts/probe.sh
+        run: bash .github/scripts/probe.sh
 
   audit-shape:
     name: "D — AUDIT + rustup env + empty CARGO_HOME"
@@ -199,4 +199,4 @@ jobs:
           MISE_CONFIG_FILE: ${{ github.workspace }}/rustup-repro/mise.toml
           REPOINT_CARGO_HOME: "yes"
           UNSET_RUSTUP_ENV: "no"
-        run: .github/scripts/probe.sh
+        run: bash .github/scripts/probe.sh
