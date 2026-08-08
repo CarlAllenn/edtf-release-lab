@@ -1,0 +1,101 @@
+---
+name: Canary repro
+
+# Diagnose the v1.2.0 canary hang: canary.sh's cargo probes complete in
+# ~11s on a developer machine but hang silently for 28-40 minutes on the
+# hosted runner inside edtf's publish job. Two identical probe jobs, one
+# variable: harden-runner egress enforcement (same pin, same allowlist as
+# the production publish job). A third leg adds the mise-pinned toolchain
+# in case the interaction needs the exact cargo build.
+"on":
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  hardened:
+    name: Probe with harden-runner block
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: block
+          # The production publish job's list, verbatim.
+          allowed-endpoints: >
+            github.com:443
+            api.github.com:443
+            uploads.github.com:443
+            objects.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
+            codeload.github.com:443
+            crates.io:443
+            index.crates.io:443
+            static.crates.io:443
+            static.rust-lang.org:443
+            mise.jdx.dev:443
+            mise-versions.jdx.dev:443
+            nodejs.org:443
+            registry.npmjs.org:443
+            fulcio.sigstore.dev:443
+            rekor.sigstore.dev:443
+            search.sigstore.dev:443
+            tuf-repo-cdn.sigstore.dev:443
+            tuf-repo.github.com:443
+            tmaproduction.blob.core.windows.net:443
+            registry-1.docker.io:443
+            auth.docker.io:443
+            production.cloudflare.docker.com:443
+            production.cloudfront.docker.com:443
+      - name: Run the canary probes with heartbeats
+        run: |
+          set -euo pipefail
+          export CARGO_HOME="${RUNNER_TEMP}/cargo"
+          echo "[$(date -u +%H:%M:%S)] cargo $(cargo --version 2>/dev/null || echo unknown)"
+          cd "${RUNNER_TEMP}"
+          cargo new --lib probe > /dev/null
+          cd probe
+          echo "[$(date -u +%H:%M:%S)] cargo add edtf-core"
+          timeout 300 cargo add edtf-core@=1.2.0
+          echo "[$(date -u +%H:%M:%S)] cargo add edtf-calendars"
+          timeout 300 cargo add edtf-calendars@=1.2.0
+          echo "[$(date -u +%H:%M:%S)] cargo add edtf-normalize"
+          timeout 300 cargo add edtf-normalize@=1.2.0
+          echo "[$(date -u +%H:%M:%S)] cargo build"
+          timeout 600 cargo build --quiet
+          echo "[$(date -u +%H:%M:%S)] cargo install edtf-cli"
+          timeout 600 cargo install edtf-cli@1.2.0 --root "${RUNNER_TEMP}/cli" --quiet
+          echo "[$(date -u +%H:%M:%S)] npm pack edtf-wasm"
+          timeout 300 npm pack edtf-wasm@1.2.0 --pack-destination "${RUNNER_TEMP}"
+          echo "[$(date -u +%H:%M:%S)] ALL PROBES PASSED"
+
+  control:
+    name: Probe without harden-runner
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - name: Run the canary probes with heartbeats
+        run: |
+          set -euo pipefail
+          export CARGO_HOME="${RUNNER_TEMP}/cargo"
+          echo "[$(date -u +%H:%M:%S)] cargo $(cargo --version 2>/dev/null || echo unknown)"
+          cd "${RUNNER_TEMP}"
+          cargo new --lib probe > /dev/null
+          cd probe
+          echo "[$(date -u +%H:%M:%S)] cargo add edtf-core"
+          timeout 300 cargo add edtf-core@=1.2.0
+          echo "[$(date -u +%H:%M:%S)] cargo add edtf-calendars"
+          timeout 300 cargo add edtf-calendars@=1.2.0
+          echo "[$(date -u +%H:%M:%S)] cargo add edtf-normalize"
+          timeout 300 cargo add edtf-normalize@=1.2.0
+          echo "[$(date -u +%H:%M:%S)] cargo build"
+          timeout 600 cargo build --quiet
+          echo "[$(date -u +%H:%M:%S)] cargo install edtf-cli"
+          timeout 600 cargo install edtf-cli@1.2.0 --root "${RUNNER_TEMP}/cli" --quiet
+          echo "[$(date -u +%H:%M:%S)] npm pack edtf-wasm"
+          timeout 300 npm pack edtf-wasm@1.2.0 --pack-destination "${RUNNER_TEMP}"
+          echo "[$(date -u +%H:%M:%S)] ALL PROBES PASSED"
