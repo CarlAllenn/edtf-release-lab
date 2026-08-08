@@ -1,0 +1,144 @@
+---
+name: OOM repro
+
+# The v1.2.1 publish died with GitHub's "Out of memory." annotation ~2
+# minutes into canary.sh, and v1.2.0 died twice in the same place with
+# the same job-lifetime correlation. Something consumes most of the
+# runner's RAM across the publish job's earlier phases. This reproduces
+# the preamble piece by piece with memory sampling between phases, twice
+# — hardened and control — so the consumer names itself.
+"on":
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  hardened:
+    name: Preamble + probes with harden-runner (memory sampled)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            api.github.com:443
+            objects.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
+            codeload.github.com:443
+            crates.io:443
+            index.crates.io:443
+            static.crates.io:443
+            static.rust-lang.org:443
+            mise.jdx.dev:443
+            mise-versions.jdx.dev:443
+            nodejs.org:443
+            registry.npmjs.org:443
+      - name: Memory baseline
+        run: |
+          set -euo pipefail
+          echo "=== baseline ==="
+          free -m
+          ps aux --sort=-rss | head -6
+      - uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4.2.3
+        with:
+          # renovate: datasource=github-releases depName=jdx/mise
+          version: 2026.7.18
+          # The production publish job's exact toolchain set, cache off.
+          install_args: rust node aqua:rustwasm/wasm-pack cargo:cargo-cyclonedx
+          cache: false
+      - name: Memory after mise
+        run: |
+          set -euo pipefail
+          echo "=== after mise toolchain install ==="
+          free -m
+          ps aux --sort=-rss | head -6
+      - name: Network churn through the agent
+        run: |
+          set -euo pipefail
+          # Approximate the publish job's connection volume: many separate
+          # HTTPS requests, each a fresh connection through the egress agent.
+          for i in $(seq 1 400); do
+            curl -so /dev/null --max-time 10 "https://crates.io/api/v1/crates/edtf-core" || true
+          done
+          echo "=== after 400 connections ==="
+          free -m
+          ps aux --sort=-rss | head -6
+      - name: Cargo probes (the canary shape)
+        run: |
+          set -euo pipefail
+          export CARGO_HOME="${RUNNER_TEMP}/cargo"
+          cd "${RUNNER_TEMP}"
+          cargo new --lib probe > /dev/null
+          cd probe
+          cargo add edtf-core@=1.2.1 > /dev/null
+          cargo add edtf-calendars@=1.2.1 > /dev/null
+          cargo add edtf-normalize@=1.2.1 > /dev/null
+          echo "=== after resolve ==="
+          free -m
+          cargo build --quiet
+          echo "=== after probe build ==="
+          free -m
+          cargo install edtf-cli@1.2.1 --root "${RUNNER_TEMP}/cli" --quiet
+          echo "=== after cargo install ==="
+          free -m
+          ps aux --sort=-rss | head -8
+          echo "ALL PROBES PASSED"
+
+  control:
+    name: Preamble + probes without harden-runner (memory sampled)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Memory baseline
+        run: |
+          set -euo pipefail
+          echo "=== baseline ==="
+          free -m
+          ps aux --sort=-rss | head -6
+      - uses: jdx/mise-action@9e7f7633ff6f6d6048a9418a68d48f288f50eb14 # v4.2.3
+        with:
+          # renovate: datasource=github-releases depName=jdx/mise
+          version: 2026.7.18
+          install_args: rust node aqua:rustwasm/wasm-pack cargo:cargo-cyclonedx
+          cache: false
+      - name: Memory after mise
+        run: |
+          set -euo pipefail
+          echo "=== after mise toolchain install ==="
+          free -m
+          ps aux --sort=-rss | head -6
+      - name: Network churn
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 400); do
+            curl -so /dev/null --max-time 10 "https://crates.io/api/v1/crates/edtf-core" || true
+          done
+          echo "=== after 400 connections ==="
+          free -m
+          ps aux --sort=-rss | head -6
+      - name: Cargo probes (the canary shape)
+        run: |
+          set -euo pipefail
+          export CARGO_HOME="${RUNNER_TEMP}/cargo"
+          cd "${RUNNER_TEMP}"
+          cargo new --lib probe > /dev/null
+          cd probe
+          cargo add edtf-core@=1.2.1 > /dev/null
+          cargo add edtf-calendars@=1.2.1 > /dev/null
+          cargo add edtf-normalize@=1.2.1 > /dev/null
+          echo "=== after resolve ==="
+          free -m
+          cargo build --quiet
+          echo "=== after probe build ==="
+          free -m
+          cargo install edtf-cli@1.2.1 --root "${RUNNER_TEMP}/cli" --quiet
+          echo "=== after cargo install ==="
+          free -m
+          ps aux --sort=-rss | head -8
+          echo "ALL PROBES PASSED"
