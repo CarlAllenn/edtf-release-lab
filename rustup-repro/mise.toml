@@ -1,0 +1,12 @@
+# LAB DIVERGENCE: a deliberately minimal copy of edtf's rust pin, kept in a
+# subdirectory and reached via MISE_CONFIG_FILE so the other lab workflows
+# (oom-repro installs `rust node ...`) are untouched.
+#
+# The `components`/`targets` options are the point: they drive mise's rustup
+# backend, which is what makes production export RUSTUP_HOME and
+# RUSTUP_TOOLCHAIN into the job environment. Passing `rust@1.97.1` via
+# install_args instead — as canary-repro's earlier legs did — leaves both
+# unset and does NOT reproduce the production shape.
+[tools]
+rust = { version = "1.97.1", components = "rustfmt,clippy", targets = "wasm32-unknown-unknown" }
+node = "26.5.1"
