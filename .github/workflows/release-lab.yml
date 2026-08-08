@@ -49,12 +49,12 @@ jobs:
         run: .github/scripts/tag-release.sh
 
   phase2:
-    name: Phase 2 — assemble and publish
+    name: Phase 2a — assemble the attested state
     if: inputs.mode == 'phase2'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v5
         with:
@@ -72,22 +72,70 @@ jobs:
       - name: Checksum the artifacts
         run: .github/scripts/checksum-artifacts.sh
 
+      - name: Manifest the attested state
+        run: |
+          set -euo pipefail
+          # The transport-integrity manifest for the job hand-off: the
+          # finish job recomputes it before touching anything public.
+          (cd dist && sha256sum -- * | sort -k2 > ../ATTESTED-STATE.sha256)
+          cat ATTESTED-STATE.sha256
+
       - name: Simulated runner death (after build)
         if: inputs.kill_after == 'build'
         run: |
-          echo "::error::simulated death after build — re-dispatch phase2 to test resume"
+          echo "::error::simulated death after build — re-run failed jobs to test resume"
+          exit 1
+
+      - name: Upload the attested state
+        uses: actions/upload-artifact@v6
+        with:
+          name: attested-state
+          path: |
+            dist/
+            ATTESTED-STATE.sha256
+          if-no-files-found: error
+          retention-days: 7
+
+  finish:
+    name: Phase 2b — canary, attach, publish (fresh runner)
+    if: inputs.mode == 'phase2'
+    needs: phase2
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Resolve version
+        run: |
+          set -euo pipefail
+          version=$(cargo pkgid --manifest-path crates/lab-core/Cargo.toml | sed 's/.*[@#]//')
+          echo "VERSION=${version}" >> "$GITHUB_ENV"
+
+      - name: Download the attested state
+        uses: actions/download-artifact@v6
+        with:
+          name: attested-state
+
+      - name: Verify the attested state survived transport
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum --check --strict --quiet ../ATTESTED-STATE.sha256)
+          echo "::notice::attested state verified across the job boundary"
+
+      - name: Simulated runner death (after attach)
+        if: inputs.kill_after == 'attach'
+        run: |
+          echo "::error::simulated death before attach — re-run failed jobs to test resume"
           exit 1
 
       - name: Attach the artifacts to the draft release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: .github/scripts/upload-lab-assets.sh
-
-      - name: Simulated runner death (after attach)
-        if: inputs.kill_after == 'attach'
-        run: |
-          echo "::error::simulated death after attach — re-dispatch phase2 to test resume"
-          exit 1
 
       - name: Publish the per-crate releases
         env:
