@@ -64,6 +64,7 @@ jobs:
         run: |
           set -euo pipefail
           cd "${RUNNER_TEMP}/edtf"
+          export VERSION=1.2.1
           sample() { echo "=== $1 ==="; free -m | head -2; ps aux --sort=-rss | head -4; }
           sample "before packaging"
           .github/scripts/package-all.sh
