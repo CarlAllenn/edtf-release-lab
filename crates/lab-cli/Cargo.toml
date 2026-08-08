@@ -1,0 +1,9 @@
+[package]
+name = "lab-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Dummy binary crate for release-pipeline testing"
+
+[dependencies]
+lab-core = { path = "../lab-core", version = "0.1.0" }

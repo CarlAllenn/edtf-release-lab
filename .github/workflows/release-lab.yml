@@ -1,0 +1,95 @@
+---
+name: Release lab
+
+# The test bed for the edtf release pipeline's RELEASE HALF (the half the
+# production runbook says is covered by nothing): tag creation, draft
+# assembly, asset upload, immutability, publish, and every recovery path —
+# against real GitHub APIs, with stub artifacts and NO registry publishes.
+#
+# Scenarios (see README):
+#   phase1                     — tag-release.sh cuts per-crate tags + drafts
+#   phase2                     — stubs -> SHA256SUMS -> attach -> publish
+#   phase2 + kill_after        — die at a chosen point, then re-dispatch
+#                                phase2 and prove convergence
+"on":
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Which phase to run
+        type: choice
+        options: [phase1, phase2]
+        default: phase2
+      kill_after:
+        description: Simulate a runner death after this step (phase2 only)
+        type: choice
+        options: [none, build, attach]
+        default: none
+
+permissions: {}
+
+concurrency:
+  group: release-lab
+  cancel-in-progress: false
+
+jobs:
+  phase1:
+    name: Phase 1 — tags and draft releases
+    if: inputs.mode == 'phase1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Create per-crate tags and draft releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/tag-release.sh
+
+  phase2:
+    name: Phase 2 — assemble and publish
+    if: inputs.mode == 'phase2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Resolve version
+        run: |
+          set -euo pipefail
+          version=$(cargo pkgid --manifest-path crates/lab-core/Cargo.toml | sed 's/.*[@#]//')
+          echo "VERSION=${version}" >> "$GITHUB_ENV"
+
+      - name: Build stub artifacts
+        run: .github/scripts/build-stub-artifacts.sh
+
+      - name: Checksum the artifacts
+        run: .github/scripts/checksum-artifacts.sh
+
+      - name: Simulated runner death (after build)
+        if: inputs.kill_after == 'build'
+        run: |
+          echo "::error::simulated death after build — re-dispatch phase2 to test resume"
+          exit 1
+
+      - name: Attach the artifacts to the draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/upload-lab-assets.sh
+
+      - name: Simulated runner death (after attach)
+        if: inputs.kill_after == 'attach'
+        run: |
+          echo "::error::simulated death after attach — re-dispatch phase2 to test resume"
+          exit 1
+
+      - name: Publish the per-crate releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/publish-releases.sh
