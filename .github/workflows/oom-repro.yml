@@ -56,6 +56,25 @@ jobs:
           echo "=== after mise toolchain install ==="
           free -m
           ps aux --sort=-rss | head -6
+      - name: Check out edtf at v1.2.1
+        run: |
+          set -euo pipefail
+          git clone -q --depth 1 --branch v1.2.1 https://github.com/CarlAllenn/edtf "${RUNNER_TEMP}/edtf"
+      - name: Real heavy steps with memory sampling
+        run: |
+          set -euo pipefail
+          cd "${RUNNER_TEMP}/edtf"
+          sample() { echo "=== $1 ==="; free -m | head -2; ps aux --sort=-rss | head -4; }
+          sample "before packaging"
+          .github/scripts/package-all.sh
+          sample "after package-all"
+          .github/scripts/assert-deterministic.sh
+          sample "after determinism double-pack"
+          wasm-pack build crates/edtf-wasm --release
+          sample "after wasm-pack"
+          cargo cyclonedx --format json --spec-version 1.5
+          cargo cyclonedx --format json --spec-version 1.5 --manifest-path crates/edtf-postgres/Cargo.toml
+          sample "after cyclonedx"
       - name: Network churn through the agent
         run: |
           set -euo pipefail
