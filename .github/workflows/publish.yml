@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@f56ba046117ad31dce978e757597ff4fc9297d50 # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/publish.yml@8379677f883f250f6fbf0781eca7f418f43772b0 # main 2026-08-09
     with:
       # The two new classes, rehearsed together. dry-run keeps the npm
       # upload out (lab-wasm has no npm package or trusted publisher yet)
@@ -31,6 +31,9 @@ jobs:
       # verify pass-through, signing, attach — runs for real.
       classes: rust-binary,wasm-npm
       binary-smoke-test: scripts/binary-smoke.sh
+      # wasm-pack needs the package crate, not the workspace's virtual
+      # manifest — found by the v0.11.0 rehearsal.
+      crate-dir: crates/lab-wasm
       dry-run: true # rehearsal: nothing irreversible until npm is configured
     permissions:
       # The union every nested job needs. A reusable workflow can only
