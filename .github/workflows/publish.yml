@@ -1,0 +1,39 @@
+# Release phase 2. THE FILENAME IS CANON — both registries pin the caller's
+# entry workflow filename from the `workflow_ref` claim, so renaming this
+# breaks trusted publishing with nothing local going red.
+#
+# The lab runs it as a rehearsal: everything happens except the crates.io
+# upload, and the release is left a draft.
+name: publish
+
+on:
+  push:
+    tags: [v*]
+  # Resume path. ALWAYS dispatch with --ref <tag>; the shared guard refuses
+  # anything that is not a tag, because a branch ref would attest a moving
+  # pointer and Sigstore is append-only.
+  workflow_dispatch: {}
+
+permissions: {}
+
+# Never cancel a publish mid-flight; queue instead.
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    uses: monumental-archive/.github/.github/workflows/publish.yml@e9e7a0b47b290df8ecb6c02219b8ccbded8088b7 # feat/publish-orchestrator
+    with:
+      class: rust-crate
+      dry-run: true
+    permissions:
+      # The union every nested job needs. A reusable workflow can only
+      # reduce what the caller grants, so a missing scope here kills the
+      # run as startup_failure with no jobs and no log.
+      contents: read # build and publish check out this repository
+      id-token: write # crates.io trusted publishing, and the signer
+      attestations: write # the signer persists the provenance
+      artifact-metadata: write # the signer creates the storage record
+    secrets:
+      app-private-key: ${{ secrets.TAG_MINT_APP_PRIVATE_KEY }}
