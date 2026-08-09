@@ -146,7 +146,7 @@ jobs:
       id-token: write
       attestations: write
       contents: read
-    uses: CarlAllenn/trusted-builder/.github/workflows/attest.yml@2af41b956b8eaf101065fdb936e141f55f0c90c5
+    uses: CarlAllenn/trusted-builder/.github/workflows/attest.yml@936f542009c63d6aa303d645c56a88c34901d62a
     with:
       subjects-artifact: subjects
       subjects-file: SUBJECTS.sha256
@@ -160,9 +160,11 @@ jobs:
     if: inputs.mode == 'phase2'
     needs: [phase2, attest]
     permissions:
+      # Exactly what verify.yml declares. A called workflow may only
+      # downgrade the caller's grant, so a mismatch in the other direction
+      # kills the run at startup with nothing to read.
       contents: read
-      actions: read
-    uses: CarlAllenn/trusted-builder/.github/workflows/verify.yml@2af41b956b8eaf101065fdb936e141f55f0c90c5
+    uses: CarlAllenn/trusted-builder/.github/workflows/verify.yml@936f542009c63d6aa303d645c56a88c34901d62a
     with:
       artifacts-artifact: attested-state
       artifacts-path: dist
@@ -170,7 +172,7 @@ jobs:
       source-ref: ${{ github.ref }}
       source-digest: ${{ github.sha }}
       signer-workflow: CarlAllenn/trusted-builder/.github/workflows/attest.yml
-      signer-digest: 2af41b956b8eaf101065fdb936e141f55f0c90c5
+      signer-digest: 936f542009c63d6aa303d645c56a88c34901d62a
 
   finish:
     name: Phase 2b — canary, attach, publish (fresh runner)
