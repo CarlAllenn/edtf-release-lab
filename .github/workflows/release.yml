@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   release:
-    uses: monumental-archive/.github/.github/workflows/release.yml@6cd5ce39db955541e1b4c039abcecf3d6305733a # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/release.yml@f78889cda40609e1a92d56ec4e1b1947a59658e2 # main 2026-08-09
     with:
       app-id: ${{ vars.TAG_MINT_APP_ID }}
     secrets:
