@@ -43,9 +43,9 @@ body = """\
 {% if version %}\
 ## [{{ version | trim_start_matches(pat="v") }}]\
 {% if previous.version %}\
-(https://github.com/monumental-archive/edtf-release-lab/compare/{{ previous.version }}...{{ version }})\
+(https://github.com/monumental-archive/release-lab/compare/{{ previous.version }}...{{ version }})\
 {% else %}\
-(https://github.com/monumental-archive/edtf-release-lab/releases/tag/{{ version }})\
+(https://github.com/monumental-archive/release-lab/releases/tag/{{ version }})\
 {% endif %} - {{ timestamp | date(format="%Y-%m-%d") }}
 {% else %}\
 ## Unreleased
@@ -55,7 +55,7 @@ body = """\
 
 {% for commit in commits %}\
 {% if commit.remote.pr_number %}\
-- {{ commit.message | trim_end_matches(pat=" (#" ~ commit.remote.pr_number ~ ")") }} ([#{{ commit.remote.pr_number }}](https://github.com/monumental-archive/edtf-release-lab/pull/{{ commit.remote.pr_number }}))
+- {{ commit.message | trim_end_matches(pat=" (#" ~ commit.remote.pr_number ~ ")") }} ([#{{ commit.remote.pr_number }}](https://github.com/monumental-archive/release-lab/pull/{{ commit.remote.pr_number }}))
 {% else %}\
 - {{ commit.message }}
 {% endif %}\
