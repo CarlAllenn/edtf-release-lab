@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.11.0](https://github.com/monumental-archive/release-lab/compare/v0.10.2...v0.11.0) - 2026-08-09
+
+### Added
+
+- rehearse the rust-binary and wasm-npm classes ([#35](https://github.com/monumental-archive/release-lab/pull/35))
+
 ## [0.10.2](https://github.com/monumental-archive/release-lab/compare/v0.10.1...v0.10.2) - 2026-08-09
 
 ### Fixed
