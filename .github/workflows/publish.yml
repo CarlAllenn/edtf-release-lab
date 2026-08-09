@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@dcb17da4932c283a485076ec0cd1539ae1bcc613 # feat/publish-orchestrator
+    uses: monumental-archive/.github/.github/workflows/publish.yml@b8c54397268fc4282169a5e0b95b224bfe8903b7 # feat/publish-orchestrator
     with:
       classes: rust-crate
       dry-run: true

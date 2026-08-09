@@ -11,3 +11,6 @@ pub const PHASE2_REHEARSAL_2: &str = "v0.5.0";
 
 /// Third rehearsal marker.
 pub const PHASE2_REHEARSAL_3: &str = "v0.6.0";
+
+/// Fourth rehearsal marker.
+pub const PHASE2_REHEARSAL_4: &str = "v0.7.0";
