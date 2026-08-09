@@ -8,9 +8,16 @@ name: Release lab
 #
 # Scenarios (see README):
 #   phase1                     — tag-release.sh cuts per-crate tags + drafts
-#   phase2                     — stubs -> SHA256SUMS -> attach -> publish
+#   phase2                     — stubs -> SHA256SUMS -> SIGN -> VERIFY ->
+#                                attach -> publish
 #   phase2 + kill_after        — die at a chosen point, then re-dispatch
 #                                phase2 and prove convergence
+#
+# phase2 also exercises the SLSA v1.0 Build L3 boundary (edtf#116): signing
+# happens in CarlAllenn/trusted-builder, pinned by commit SHA, which receives
+# nothing from this repository except a file of digests. This is the first
+# place that split runs at all — production adopts it only once it is green
+# here, including the resume paths.
 "on":
   workflow_dispatch:
     inputs:
@@ -55,6 +62,8 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
+    outputs:
+      subjects-digest: ${{ steps.subjects.outputs.digest }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -80,11 +89,33 @@ jobs:
           (cd dist && sha256sum -- * | sort -k2 > ../ATTESTED-STATE.sha256)
           cat ATTESTED-STATE.sha256
 
+      # What the trusted builder receives — and the ONLY thing it receives.
+      # A copy of the transport manifest, uploaded as its own small artifact
+      # so the signing job never has the artifact bytes in its workspace at
+      # all. Its digest travels as a declared input, because the artifact
+      # store is transport, not a trust boundary.
+      - name: Declare the subjects for the trusted builder
+        id: subjects
+        run: |
+          set -euo pipefail
+          cp ATTESTED-STATE.sha256 SUBJECTS.sha256
+          digest=$(sha256sum SUBJECTS.sha256 | cut -d' ' -f1)
+          echo "digest=${digest}" >> "$GITHUB_OUTPUT"
+          echo "::notice::$(grep -c . SUBJECTS.sha256) subjects, manifest ${digest}"
+
       - name: Simulated runner death (after build)
         if: inputs.kill_after == 'build'
         run: |
           echo "::error::simulated death after build — re-run failed jobs to test resume"
           exit 1
+
+      - name: Upload the subjects
+        uses: actions/upload-artifact@v6
+        with:
+          name: subjects
+          path: SUBJECTS.sha256
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Upload the attested state
         uses: actions/upload-artifact@v6
@@ -96,10 +127,57 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  # --- the SLSA Build L3 boundary --------------------------------------
+  # Signing happens in a workflow this repository cannot modify, over digests
+  # this repository computed. Note what is NOT granted to phase2 above:
+  # `id-token` and `attestations` live only here, and this job runs no code
+  # from this repository.
+  #
+  # Pinned by commit SHA, not a tag: `uses:` accepts no contexts or
+  # expressions, and a mutable ref would put the signer's contents outside
+  # the caller's control between runs.
+  attest:
+    name: Sign — trusted builder
+    if: inputs.mode == 'phase2'
+    needs: phase2
+    permissions:
+      # Granted HERE because a called workflow can only downgrade
+      # permissions, never elevate them.
+      id-token: write
+      attestations: write
+      contents: read
+    uses: CarlAllenn/trusted-builder/.github/workflows/attest.yml@2af41b956b8eaf101065fdb936e141f55f0c90c5
+    with:
+      subjects-artifact: subjects
+      subjects-file: SUBJECTS.sha256
+      subjects-digest: ${{ needs.phase2.outputs.subjects-digest }}
+
+  # The stranger's check, before anything is published. Pins the signer to
+  # the builder's WORKFLOW FILE and COMMIT — never --signer-repo, which would
+  # accept a signature from any workflow in the builder repository.
+  verify:
+    name: Verify — as a consumer
+    if: inputs.mode == 'phase2'
+    needs: [phase2, attest]
+    permissions:
+      contents: read
+      actions: read
+    uses: CarlAllenn/trusted-builder/.github/workflows/verify.yml@2af41b956b8eaf101065fdb936e141f55f0c90c5
+    with:
+      artifacts-artifact: attested-state
+      artifacts-path: dist
+      source-repo: ${{ github.repository }}
+      source-ref: ${{ github.ref }}
+      source-digest: ${{ github.sha }}
+      signer-workflow: CarlAllenn/trusted-builder/.github/workflows/attest.yml
+      signer-digest: 2af41b956b8eaf101065fdb936e141f55f0c90c5
+
   finish:
     name: Phase 2b — canary, attach, publish (fresh runner)
     if: inputs.mode == 'phase2'
-    needs: phase2
+    # Strictly after verification: nothing becomes public until the
+    # attestations have been checked the way a consumer will check them.
+    needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
