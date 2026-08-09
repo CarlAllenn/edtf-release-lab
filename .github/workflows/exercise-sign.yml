@@ -66,7 +66,7 @@ jobs:
     # Pinned by full SHA, like every caller must. This exact digest is what
     # the verification below pins as --signer-digest, so the two halves of
     # the identity are proven together rather than assumed to agree.
-    uses: monumental-archive/signer/.github/workflows/sign.yml@5eb20d07f5aeba93abd2e0b907c32d189df7d5ba # feat/sign
+    uses: monumental-archive/signer/.github/workflows/sign.yml@3c30fc243b42b95a7fb09934b3ab19292e051ba2 # main
     with:
       subjects: ${{ needs.build.outputs.subjects }}
     permissions:
@@ -108,7 +108,7 @@ jobs:
             gh attestation verify "${f}" \
               --repo "${GITHUB_REPOSITORY}" \
               --signer-workflow monumental-archive/signer/.github/workflows/sign.yml \
-              --signer-digest 5eb20d07f5aeba93abd2e0b907c32d189df7d5ba \
+              --signer-digest 3c30fc243b42b95a7fb09934b3ab19292e051ba2 \
               --deny-self-hosted-runners
           done
 
@@ -124,6 +124,6 @@ jobs:
               --bundle "${bundle}" \
               --repo "${GITHUB_REPOSITORY}" \
               --signer-workflow monumental-archive/signer/.github/workflows/sign.yml \
-              --signer-digest 5eb20d07f5aeba93abd2e0b907c32d189df7d5ba \
+              --signer-digest 3c30fc243b42b95a7fb09934b3ab19292e051ba2 \
               --deny-self-hosted-runners
           done
