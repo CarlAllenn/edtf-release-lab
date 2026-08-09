@@ -1,0 +1,2 @@
+Payload for the OCI signing scenario. The image is never run — it exists so
+attest-oci.yml and verify-oci.yml have a real subject with a real digest.
