@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@8a8382913cb517af1816feaa7c4e26907ab7b5a0 # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/publish.yml@80aac51104214a7043981dc06d3c4af5510c8b93 # main 2026-08-09
     with:
       # Both classes in one release — the case a scalar `class` could not
       # express, and the one iiif-server and edtf both need.
