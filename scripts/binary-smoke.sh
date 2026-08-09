@@ -7,7 +7,7 @@ dir="$1"
 target="$2"
 out=$("${dir}/lab-cli")
 echo "${target}: ${out}"
-[[ "${out}" == lab-cli\ *answer:\ 42* ]] || {
+[[ ${out} == lab-cli\ *answer:\ 42* ]] || {
   echo "unexpected output: ${out}" >&2
   exit 1
 }
