@@ -27,9 +27,13 @@ jobs:
     with:
       # Both classes in one release — the case a scalar `class` could not
       # express, and the one iiif-server and edtf both need.
-      classes: rust-crate,oci-image
+      # oci-image ALONE for this run, deliberately. dry-run: false with
+      # rust-crate in the mix would attempt cargo publish for crates that
+      # do not exist on crates.io and have no trusted publisher — the
+      # genuinely irreversible half, and not the half that needs proving.
+      classes: oci-image
       smoke-test: scripts/image-smoke.sh
-      dry-run: true
+      dry-run: false # prove push, manifest assembly and OCI signing for real
     permissions:
       # The union every nested job needs. A reusable workflow can only
       # reduce what the caller grants, so a missing scope here kills the
