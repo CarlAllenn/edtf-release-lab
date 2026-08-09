@@ -1,0 +1,23 @@
+# EXPERIMENT: minimal caller, literal single-line input. Isolates whether
+# sign.yml itself parses from whether the multi-line output plumbing does.
+name: probe-sign-min
+
+on:
+  push:
+    branches: [exercise/sign]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sign:
+    uses: monumental-archive/signer/.github/workflows/sign.yml@1c2e24ecc114c15dfdfc07ab75449bfdcd7d1717 # feat/sign
+    with:
+      subjects: "0000000000000000000000000000000000000000000000000000000000000000  probe.txt"
+    permissions:
+      id-token: write # signer mints the identity
+      attestations: write # signer persists provenance
+      artifact-metadata: write # signer creates the storage record
