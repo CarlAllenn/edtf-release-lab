@@ -1,0 +1,19 @@
+name: probe-call2
+
+on:
+  push:
+    branches: [exercise/sign]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  call:
+    uses: monumental-archive/signer/.github/workflows/probe-min2.yml@f04e8174aa36b5336371c22369767b8ba9480c19 # probe/perm-min
+    permissions:
+      id-token: write # under test
+      attestations: write # under test
+
