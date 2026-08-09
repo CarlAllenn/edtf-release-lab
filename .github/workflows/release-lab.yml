@@ -14,7 +14,7 @@ name: Release lab
 #                                phase2 and prove convergence
 #
 # phase2 also exercises the SLSA v1.0 Build L3 boundary (edtf#116): signing
-# happens in CarlAllenn/trusted-builder, pinned by commit SHA, which receives
+# happens in monumental-archive/trusted-builder, pinned by commit SHA, which receives
 # nothing from this repository except a file of digests. This is the first
 # place that split runs at all — production adopts it only once it is green
 # here, including the resume paths.
@@ -149,7 +149,7 @@ jobs:
       id-token: write
       attestations: write
       contents: read
-    uses: CarlAllenn/trusted-builder/.github/workflows/attest.yml@936f542009c63d6aa303d645c56a88c34901d62a
+    uses: monumental-archive/trusted-builder/.github/workflows/attest.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       subjects-artifact: subjects
       subjects-file: SUBJECTS.sha256
@@ -167,15 +167,15 @@ jobs:
       # downgrade the caller's grant, so a mismatch in the other direction
       # kills the run at startup with nothing to read.
       contents: read
-    uses: CarlAllenn/trusted-builder/.github/workflows/verify.yml@936f542009c63d6aa303d645c56a88c34901d62a
+    uses: monumental-archive/trusted-builder/.github/workflows/verify.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       artifacts-artifact: attested-state
       artifacts-path: dist
       source-repo: ${{ github.repository }}
       source-ref: ${{ github.ref }}
       source-digest: ${{ github.sha }}
-      signer-workflow: CarlAllenn/trusted-builder/.github/workflows/attest.yml
-      signer-digest: 936f542009c63d6aa303d645c56a88c34901d62a
+      signer-workflow: monumental-archive/trusted-builder/.github/workflows/attest.yml
+      signer-digest: 69df1ab9b60a9104426acc10f583138c429cae12
 
   # The transport check and the chaos hook stay HERE: they are properties of
   # this pipeline's job hand-off, not of the shared release half.
@@ -220,7 +220,7 @@ jobs:
     needs: [phase2, transport]
     permissions:
       contents: write
-    uses: CarlAllenn/trusted-builder/.github/workflows/attach-assets.yml@f58e6dc3fbc6f4d485e2e7164cf5ef8c01f6f9c0
+    uses: monumental-archive/trusted-builder/.github/workflows/attach-assets.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       artifacts-artifact: attested-state
       artifacts-path: dist
@@ -241,7 +241,7 @@ jobs:
     needs: [phase2, attach]
     permissions:
       contents: write
-    uses: CarlAllenn/trusted-builder/.github/workflows/publish-releases.yml@f58e6dc3fbc6f4d485e2e7164cf5ef8c01f6f9c0
+    uses: monumental-archive/trusted-builder/.github/workflows/publish-releases.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       expected-count: 2
       releases: |
