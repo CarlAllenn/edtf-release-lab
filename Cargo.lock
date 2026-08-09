@@ -32,7 +32,7 @@ checksum = "26b73573e6edcd2af0cdf47bd6cb58f0b3839491263c314eaad1ccf24430e1de"
 
 [[package]]
 name = "lab-cli"
-version = "0.11.0"
+version = "0.11.1"
 dependencies = [
  "lab-core",
  "mimalloc",
@@ -40,11 +40,11 @@ dependencies = [
 
 [[package]]
 name = "lab-core"
-version = "0.11.0"
+version = "0.11.1"
 
 [[package]]
 name = "lab-wasm"
-version = "0.11.0"
+version = "0.11.1"
 dependencies = [
  "lab-core",
  "wasm-bindgen",
