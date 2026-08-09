@@ -1,0 +1,54 @@
+# Continuous proof of the shared release machinery.
+#
+# The org's linters cannot see the failures that matter here. Four defects
+# in one day were invisible to actionlint, zizmor --persona=pedantic, shfmt
+# and every belt task, and three of them surfaced only because a real
+# cross-repository run existed: an Actions policy rejecting an unlisted
+# action, `gh api user` under an App token, and a nested `uses:` job
+# inheriting the wrong permissions. Each failed as `startup_failure` or a
+# bare 403, with no annotation to read.
+#
+# So the machinery is proven on a schedule rather than proven once and
+# trusted indefinitely — the same argument as the weekly image rebuild:
+# the world changes underneath a pipeline that has not run.
+#
+# It re-dispatches the real publish workflow against the newest v* tag, in
+# dry-run, so the shape exercised is the shape a release takes. Nothing is
+# tagged, nothing is published, no registry is touched.
+name: weekly-exercise
+
+on:
+  schedule:
+    # Monday, offset from the audit workflow so a bad week does not arrive
+    # as one indistinguishable pile of red.
+    - cron: 0 7 * * 1
+  workflow_dispatch: {}
+
+permissions: {}
+
+concurrency:
+  group: weekly-exercise
+  cancel-in-progress: false
+
+jobs:
+  exercise:
+    name: Re-run the release chain against the newest tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # read the tag list
+      actions: write # dispatch the publish workflow
+    steps:
+      - name: Dispatch publish against the newest v* tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Newest by creation, not by name: a lexical sort puts v0.10.0
+          # before v0.9.0, which would silently exercise an old pipeline.
+          tag=$(gh api "repos/${GITHUB_REPOSITORY}/tags" --jq '[.[] | select(.name | startswith("v"))][0].name')
+          if [[ -z "${tag}" ]]; then
+            echo "::error::no v* tag to exercise"
+            exit 1
+          fi
+          echo "::notice::exercising the release chain against ${tag}"
+          gh workflow run publish.yml --repo "${GITHUB_REPOSITORY}" --ref "${tag}"
