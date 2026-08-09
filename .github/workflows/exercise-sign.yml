@@ -9,9 +9,10 @@
 # performed the way a stranger would perform it.
 name: exercise-sign
 
+# Run on demand. Not on push: every run mints a real Sigstore entry, and
+# the transparency log is append-only — proof should be deliberate, not a
+# by-product of touching this repository.
 on:
-  push:
-    branches: [exercise/sign]
   workflow_dispatch:
 
 permissions: {}
