@@ -14,3 +14,6 @@ pub const PHASE2_REHEARSAL_3: &str = "v0.6.0";
 
 /// Fourth rehearsal marker.
 pub const PHASE2_REHEARSAL_4: &str = "v0.7.0";
+
+/// Key-rotation verification marker.
+pub const KEY_ROTATION_CHECK: &str = "v0.8.0";
