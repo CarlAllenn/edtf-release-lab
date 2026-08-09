@@ -21,8 +21,14 @@ concurrency:
 
 jobs:
   release:
-    uses: monumental-archive/.github/.github/workflows/release.yml@466fa3a3bd5654226c6f4bf578a98495a947939b # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/release.yml@0507297ddbb1f6f195cafa0eb0b8c840f36a975f # main 2026-08-09
     with:
       app-id: ${{ vars.TAG_MINT_APP_ID }}
+    permissions:
+      # Required. A uses: job with no permissions block takes the
+      # WORKFLOW-level default, not some ambient grant — and the shared
+      # workflow needs this for git-cliff's GitHub API calls. Omitting it
+      # kills the run as startup_failure with no jobs and no log.
+      contents: read # git-cliff's API calls, and the checkout
     secrets:
       app-private-key: ${{ secrets.TAG_MINT_APP_PRIVATE_KEY }}
