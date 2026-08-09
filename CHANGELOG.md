@@ -6,63 +6,82 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
-## [0.8.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.7.0...v0.8.0) - 2026-08-09
+## [0.9.0](https://github.com/monumental-archive/release-lab/compare/v0.8.0...v0.9.0) - 2026-08-09
 
 ### Added
 
-- verify the rotated app key end to end ([#19](https://github.com/monumental-archive/edtf-release-lab/pull/19))
+- add a class-representative image fixture ([#23](https://github.com/monumental-archive/release-lab/pull/23))
+
+### CI
+
+- remove the weekly exercise until it is worth having ([#20](https://github.com/monumental-archive/release-lab/pull/20))
+
+### Dependencies
+
+- pin debian docker tag to 3a39a05 ([#24](https://github.com/monumental-archive/release-lab/pull/24))
+
+### Fixed
+
+- pick up the git-cliff auth fix and repair the changelog links ([#25](https://github.com/monumental-archive/release-lab/pull/25))
+- grant contents: read to the shared release workflow ([#26](https://github.com/monumental-archive/release-lab/pull/26))
+
+## [0.8.0](https://github.com/monumental-archive/release-lab/compare/v0.7.0...v0.8.0) - 2026-08-09
+
+### Added
+
+- verify the rotated app key end to end ([#19](https://github.com/monumental-archive/release-lab/pull/19))
 
 ### CI
 
 - pin the orchestrator to main now that it is merged
-- prove the release machinery weekly, not once ([#18](https://github.com/monumental-archive/edtf-release-lab/pull/18))
+- prove the release machinery weekly, not once ([#18](https://github.com/monumental-archive/release-lab/pull/18))
 
-## [0.7.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.6.0...v0.7.0) - 2026-08-09
+## [0.7.0](https://github.com/monumental-archive/release-lab/compare/v0.6.0...v0.7.0) - 2026-08-09
 
 ### Added
 
 - bump the orchestrator pin for the fourth rehearsal
 
-## [0.6.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.5.0...v0.6.0) - 2026-08-09
+## [0.6.0](https://github.com/monumental-archive/release-lab/compare/v0.5.0...v0.6.0) - 2026-08-09
 
 ### Added
 
 - adopt the plural classes input and retry the rehearsal
 
-## [0.5.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.4.0...v0.5.0) - 2026-08-09
+## [0.5.0](https://github.com/monumental-archive/release-lab/compare/v0.4.0...v0.5.0) - 2026-08-09
 
 ### Added
 
 - bump the orchestrator pin and drive a second rehearsal
 
-## [0.4.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.3.0...v0.4.0) - 2026-08-09
+## [0.4.0](https://github.com/monumental-archive/release-lab/compare/v0.3.0...v0.4.0) - 2026-08-09
 
 ### Added
 
-- call the shared publish orchestrator as a rehearsal ([#12](https://github.com/monumental-archive/edtf-release-lab/pull/12))
+- call the shared publish orchestrator as a rehearsal ([#12](https://github.com/monumental-archive/release-lab/pull/12))
 - add a marker constant to drive a minor bump
 
 ### CI
 
-- exercise the signer across the repository boundary ([#10](https://github.com/monumental-archive/edtf-release-lab/pull/10))
+- exercise the signer across the repository boundary ([#10](https://github.com/monumental-archive/release-lab/pull/10))
 - bump the shared release pin to pick up the sign-off fix
 
 ### Dependencies
 
-- update dependency rust to v1.97.1 ([#8](https://github.com/monumental-archive/edtf-release-lab/pull/8))
+- update dependency rust to v1.97.1 ([#8](https://github.com/monumental-archive/release-lab/pull/8))
 
 ### Miscellaneous
 
-- adopt the org scaffold and conform the workflows ([#7](https://github.com/monumental-archive/edtf-release-lab/pull/7))
-- sync the commit config with org canon ([#11](https://github.com/monumental-archive/edtf-release-lab/pull/11))
+- adopt the org scaffold and conform the workflows ([#7](https://github.com/monumental-archive/release-lab/pull/7))
+- sync the commit config with org canon ([#11](https://github.com/monumental-archive/release-lab/pull/11))
 
-## [0.3.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.2.0...v0.3.0) - 2026-08-09
+## [0.3.0](https://github.com/monumental-archive/release-lab/compare/v0.2.0...v0.3.0) - 2026-08-09
 
 ### Added
 
 - reposition as the org release lab; record the tag-lock scenario
 
-## [0.2.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.1.2...v0.2.0) - 2026-08-09
+## [0.2.0](https://github.com/monumental-archive/release-lab/compare/v0.1.2...v0.2.0) - 2026-08-09
 
 ### Added
 
@@ -73,19 +92,19 @@ over the lab crates' public APIs (this is a test bed; the promise is nominal).
 - pin lab actions to SHAs; ride the job_workflow_sha canon fix
 - ride the git-cliff belt standup
 
-## [0.1.2](https://github.com/monumental-archive/edtf-release-lab/compare/lab-core-v0.1.2...v0.1.2) - 2026-08-09
+## [0.1.2](https://github.com/monumental-archive/release-lab/compare/lab-core-v0.1.2...v0.1.2) - 2026-08-09
 
 ### Added
 
 - an oci scenario, so the image signer has a subject
 
-## [lab-core-v0.1.2](https://github.com/monumental-archive/edtf-release-lab/compare/lab-core-v0.1.1...lab-core-v0.1.2) - 2026-08-09
+## [lab-core-v0.1.2](https://github.com/monumental-archive/release-lab/compare/lab-core-v0.1.1...lab-core-v0.1.2) - 2026-08-09
 
 ### Added
 
 - agent leak test — bulk egress with RSS sampling
-- sign through the trusted builder, verify before publishing ([#1](https://github.com/monumental-archive/edtf-release-lab/pull/1))
-- drive the shared release half, and bump to 0.1.2 ([#2](https://github.com/monumental-archive/edtf-release-lab/pull/2))
+- sign through the trusted builder, verify before publishing ([#1](https://github.com/monumental-archive/release-lab/pull/1))
+- drive the shared release half, and bump to 0.1.2 ([#2](https://github.com/monumental-archive/release-lab/pull/2))
 
 ### Fixed
 
@@ -99,7 +118,7 @@ over the lab crates' public APIs (this is a test bed; the promise is nominal).
 - four legs isolating CARGO_HOME repoint vs rustup env
 - is egress enforcement a precondition for the stall?
 
-## [lab-core-v0.1.1](https://github.com/monumental-archive/edtf-release-lab/compare/lab-core-v0.1.0...lab-core-v0.1.1) - 2026-08-08
+## [lab-core-v0.1.1](https://github.com/monumental-archive/release-lab/compare/lab-core-v0.1.0...lab-core-v0.1.1) - 2026-08-08
 
 ### Added
 
@@ -116,7 +135,7 @@ over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
 - bump to 0.1.1 for the tail-split rehearsal
 
-## [lab-core-v0.1.0](https://github.com/monumental-archive/edtf-release-lab/releases/tag/lab-core-v0.1.0) - 2026-08-08
+## [lab-core-v0.1.0](https://github.com/monumental-archive/release-lab/releases/tag/lab-core-v0.1.0) - 2026-08-08
 
 ### Added
 
