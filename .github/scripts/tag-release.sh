@@ -108,7 +108,8 @@ for name in "${CRATES[@]}"; do
     echo "::notice::created ref refs/tags/${tag} -> ${GITHUB_SHA}"
   fi
 
-  # publish-releases.sh publishes these at the end of phase 2; they must not
+  # The shared publish-releases workflow publishes these at the end of
+  # phase 2; they must not
   # go public before their assets are attached (issue #55).
   if [[ ${RELEASE_EXISTS} == "true" ]]; then
     echo "::notice::draft release ${tag} already exists; leaving it alone"

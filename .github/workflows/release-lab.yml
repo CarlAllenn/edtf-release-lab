@@ -64,16 +64,19 @@ jobs:
       contents: read
     outputs:
       subjects-digest: ${{ steps.subjects.outputs.digest }}
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v5
         with:
           persist-credentials: false
 
       - name: Resolve version
+        id: version
         run: |
           set -euo pipefail
           version=$(cargo pkgid --manifest-path crates/lab-core/Cargo.toml | sed 's/.*[@#]//')
           echo "VERSION=${version}" >> "$GITHUB_ENV"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
 
       - name: Build stub artifacts
         run: .github/scripts/build-stub-artifacts.sh
@@ -174,27 +177,17 @@ jobs:
       signer-workflow: CarlAllenn/trusted-builder/.github/workflows/attest.yml
       signer-digest: 936f542009c63d6aa303d645c56a88c34901d62a
 
-  finish:
-    name: Phase 2b — canary, attach, publish (fresh runner)
+  # The transport check and the chaos hook stay HERE: they are properties of
+  # this pipeline's job hand-off, not of the shared release half.
+  transport:
+    name: Phase 2b — verify the attested state across the boundary
     if: inputs.mode == 'phase2'
-    # Strictly after verification: nothing becomes public until the
-    # attestations have been checked the way a consumer will check them.
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: write
+      contents: read
     steps:
-      - uses: actions/checkout@v5
-        with:
-          persist-credentials: false
-
-      - name: Resolve version
-        run: |
-          set -euo pipefail
-          version=$(cargo pkgid --manifest-path crates/lab-core/Cargo.toml | sed 's/.*[@#]//')
-          echo "VERSION=${version}" >> "$GITHUB_ENV"
-
       - name: Download the attested state
         uses: actions/download-artifact@v6
         with:
@@ -212,12 +205,45 @@ jobs:
           echo "::error::simulated death before attach — re-run failed jobs to test resume"
           exit 1
 
-      - name: Attach the artifacts to the draft release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: .github/scripts/upload-lab-assets.sh
+  # --- the shared release half -----------------------------------------
+  # Both come from trusted-builder, and NEITHER may hold id-token: they run
+  # with contents: write against this repository's releases, so a signature
+  # minted in one would bear the builder's identity while executing caller
+  # code. That is why consumers pin --signer-workflow to attest.yml alone and
+  # never --signer-repo.
+  #
+  # The manifest is ENUMERATED, and the count is asserted on the other side:
+  # a glob is what silently skipped a crate at edtf v1.0.0.
+  attach:
+    name: Attach assets — shared
+    if: inputs.mode == 'phase2'
+    needs: [phase2, transport]
+    permissions:
+      contents: write
+    uses: CarlAllenn/trusted-builder/.github/workflows/attach-assets.yml@f58e6dc3fbc6f4d485e2e7164cf5ef8c01f6f9c0
+    with:
+      artifacts-artifact: attested-state
+      artifacts-path: dist
+      # replace-while-draft, not skip-if-present: build-stub-artifacts.sh
+      # embeds a BUILT_AT timestamp precisely so rebuilt bytes differ, which
+      # is the condition that makes name-skipping publish run 1's tarballs
+      # beside run 2's SHA256SUMS.
+      policy: replace-while-draft
+      expected-count: 3
+      manifest: |
+        lab-cli-v${{ needs.phase2.outputs.version }} lab-cli-${{ needs.phase2.outputs.version }}-x86_64-unknown-linux-gnu.tar.gz
+        lab-cli-v${{ needs.phase2.outputs.version }} lab-cli-${{ needs.phase2.outputs.version }}-aarch64-unknown-linux-gnu.tar.gz
+        lab-cli-v${{ needs.phase2.outputs.version }} SHA256SUMS
 
-      - name: Publish the per-crate releases
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: .github/scripts/publish-releases.sh
+  publish:
+    name: Publish releases — shared
+    if: inputs.mode == 'phase2'
+    needs: [phase2, attach]
+    permissions:
+      contents: write
+    uses: CarlAllenn/trusted-builder/.github/workflows/publish-releases.yml@f58e6dc3fbc6f4d485e2e7164cf5ef8c01f6f9c0
+    with:
+      expected-count: 2
+      releases: |
+        lab-core-v${{ needs.phase2.outputs.version }}
+        lab-cli-v${{ needs.phase2.outputs.version }}

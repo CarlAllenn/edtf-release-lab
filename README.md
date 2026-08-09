@@ -15,12 +15,20 @@ production pipeline uses, with the crate lists edited to this repo's two
 dummy crates — the same edit every adopter of the pipeline makes, so the
 lab doubles as a rehearsal of the shared-config port.
 
+From 0.1.2 it also drives
+[CarlAllenn/trusted-builder](https://github.com/CarlAllenn/trusted-builder),
+pinned by commit SHA: `attest`/`verify` (the SLSA Build L3 signing boundary)
+and `attach`/`publish` (the shared release half). The lab is the only place
+that caller-to-builder contract executes, and it spans two repositories, so
+no local linter can check it — the first attempt died as `startup_failure`
+with no jobs, no annotations and no log, over one permission scope.
+
 | Scenario | Dispatch | Proves |
 | --- | --- | --- |
 | Golden path | `phase1`, then `phase2` | tags + drafts cut; assets attach; releases publish immutable |
 | Resume after death mid-assembly | `phase2` with `kill_after: build`, then plain `phase2` | re-dispatch converges; rebuilt bytes overwrite draft assets; SHA256SUMS stays consistent |
 | Resume after death pre-publish | `phase2` with `kill_after: attach`, then plain `phase2` | attach is idempotent while draft; publish picks up where it died |
-| Immutability regression | disable immutable releases, run `phase2` | publish-releases.sh stops after ONE mutable release, names the fix |
+| Immutability regression | disable immutable releases, run `phase2` | the shared publish-releases workflow stops after ONE mutable release, names the fix |
 | Stranded version recovery | bump the workspace version, dispatch `phase1` | tag-release.sh's guards (existing tags, wrong-commit tags, duplicate drafts) |
 
 Each new pipeline defect found in production gets a scenario here first;
