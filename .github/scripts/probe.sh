@@ -22,7 +22,7 @@ echo "  RUSTUP_HOME       : ${RUSTUP_HOME:-unset}"
 echo "  CARGO_HOME        : ${CARGO_HOME:-unset}"
 echo "  installed toolchains:"
 find "${RUSTUP_HOME:-${HOME}/.rustup}/toolchains" -maxdepth 1 -mindepth 1 \
-	-printf '    %f\n' 2>/dev/null || echo "    (no toolchains directory)"
+  -printf '    %f\n' 2> /dev/null || echo "    (no toolchains directory)"
 
 beat "cargo --version (bounded, before any CARGO_HOME change)"
 timeout 60 cargo --version
@@ -32,17 +32,17 @@ scratch=$(mktemp -d)
 trap 'rm -rf "${scratch}"' EXIT
 
 if [[ ${UNSET_RUSTUP_ENV} == "yes" ]]; then
-	beat "unsetting RUSTUP_TOOLCHAIN and RUSTUP_HOME"
-	unset RUSTUP_TOOLCHAIN RUSTUP_HOME
+  beat "unsetting RUSTUP_TOOLCHAIN and RUSTUP_HOME"
+  unset RUSTUP_TOOLCHAIN RUSTUP_HOME
 fi
 
 if [[ ${REPOINT_CARGO_HOME} == "yes" ]]; then
-	# Exactly what canary.sh does: an empty CARGO_HOME, with RUSTUP_HOME
-	# (if still set) pointing at the real, populated install.
-	export CARGO_HOME="${scratch}/cargo"
-	beat "CARGO_HOME repointed at an empty dir: ${CARGO_HOME}"
+  # Exactly what canary.sh does: an empty CARGO_HOME, with RUSTUP_HOME
+  # (if still set) pointing at the real, populated install.
+  export CARGO_HOME="${scratch}/cargo"
+  beat "CARGO_HOME repointed at an empty dir: ${CARGO_HOME}"
 else
-	beat "CARGO_HOME left as-is: ${CARGO_HOME:-unset}"
+  beat "CARGO_HOME left as-is: ${CARGO_HOME:-unset}"
 fi
 
 beat ">>> cargo new --lib  (THE PRODUCTION STALL POINT)"
@@ -51,23 +51,23 @@ timeout 180 cargo new --lib "${scratch}/probe" || rc=$?
 beat "<<< cargo new returned rc=${rc}"
 
 if [[ ${rc} -ne 0 ]]; then
-	echo "::error::cargo new did not complete (rc=${rc}; 124 means the bound fired)"
-	beat "post-mortem"
-	# shellcheck disable=SC2012 # human-readable diagnostics, not parsed
-	{
-		echo "  CARGO_HOME contents:"
-		ls -la "${CARGO_HOME:-/nonexistent}" 2>/dev/null | sed 's/^/    /' ||
-			echo "    (absent or unreadable)"
-		echo "  scratch contents:"
-		ls -la "${scratch}" 2>/dev/null | sed 's/^/    /'
-	}
-	exit 1
+  echo "::error::cargo new did not complete (rc=${rc}; 124 means the bound fired)"
+  beat "post-mortem"
+  # shellcheck disable=SC2012 # human-readable diagnostics, not parsed
+  {
+    echo "  CARGO_HOME contents:"
+    ls -la "${CARGO_HOME:-/nonexistent}" 2> /dev/null | sed 's/^/    /' \
+      || echo "    (absent or unreadable)"
+    echo "  scratch contents:"
+    ls -la "${scratch}" 2> /dev/null | sed 's/^/    /'
+  }
+  exit 1
 fi
 
 beat "cargo new completed — continuing to the registry probe"
 rc=0
 timeout 300 cargo add --manifest-path "${scratch}/probe/Cargo.toml" \
-	"edtf-core@=1.2.0" || rc=$?
+  "edtf-core@=1.2.0" || rc=$?
 beat "cargo add returned rc=${rc}"
 [[ ${rc} -eq 0 ]] || exit 1
 

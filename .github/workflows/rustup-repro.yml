@@ -17,7 +17,15 @@ name: Rustup CARGO_HOME repro
 "on":
   workflow_dispatch: {}
 
+# Nothing at workflow level; each job grants only what it needs.
 permissions: {}
+
+# One repro at a time: these are diagnostic runs whose whole value is a
+# clean signal, and two overlapping runs contend for the same runner
+# conditions they exist to measure.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
 
@@ -25,6 +33,7 @@ jobs:
     name: "A — block + rustup env + empty CARGO_HOME (production)"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -70,6 +79,7 @@ jobs:
     name: "B — block + rustup env, CARGO_HOME left alone"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -115,6 +125,7 @@ jobs:
     name: "C — block + empty CARGO_HOME, RUSTUP_* unset"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -160,6 +171,7 @@ jobs:
     name: "D — AUDIT + rustup env + empty CARGO_HOME"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:

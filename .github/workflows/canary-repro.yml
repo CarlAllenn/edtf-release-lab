@@ -10,13 +10,22 @@ name: Canary repro
 "on":
   workflow_dispatch: {}
 
+# Nothing at workflow level; each job grants only what it needs.
 permissions: {}
+
+# One repro at a time: these are diagnostic runs whose whole value is a
+# clean signal, and two overlapping runs contend for the same runner
+# conditions they exist to measure.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   hardened:
     name: Probe with harden-runner block
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -75,6 +84,7 @@ jobs:
     name: Probe without harden-runner
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -124,6 +134,7 @@ jobs:
     name: mise 2026.7.12 + harden-runner block
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -183,6 +194,7 @@ jobs:
     name: mise 2026.7.18 + harden-runner block
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:
@@ -242,6 +254,7 @@ jobs:
     name: mise 2026.7.18 without harden-runner
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Read-only: a diagnostic run reads the tree and writes nothing back.
     permissions:
       contents: read
     steps:

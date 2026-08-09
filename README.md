@@ -1,11 +1,11 @@
-# edtf-release-lab
+# release-lab
 
 The org's release lab: where risky release machinery is proven before any
 production repository runs it. Dummy crates, **real GitHub APIs, real
 credentials, real rulesets**, no registry publishes.
 
-It began as a test bed for one project's pipeline (hence the name) and is
-now org-generic. The canon it proves lives in
+It began as a test bed for one project's pipeline, and was renamed when it
+became org-generic. The canon it proves lives in
 [monumental-archive/.github](https://github.com/monumental-archive/.github)
 — `docs/release.md`. Repositories conform to that canon; this lab is where
 the canon is exercised first.

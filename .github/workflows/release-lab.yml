@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      contents: write
+      contents: write # cut tags, drafts and the final publish
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: read # read the tree; nothing is written back
     outputs:
       subjects-digest: ${{ steps.subjects.outputs.digest }}
       version: ${{ steps.version.outputs.version }}
@@ -149,9 +149,9 @@ jobs:
     permissions:
       # Granted HERE because a called workflow can only downgrade
       # permissions, never elevate them.
-      id-token: write
-      attestations: write
-      contents: read
+      id-token: write # Sigstore signing, in a builder that runs no code of ours
+      attestations: write # write the attestation this run produces
+      contents: read # read the tree; nothing is written back
     uses: monumental-archive/trusted-builder/.github/workflows/attest.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       subjects-artifact: subjects
@@ -169,7 +169,7 @@ jobs:
       # Exactly what verify.yml declares. A called workflow may only
       # downgrade the caller's grant, so a mismatch in the other direction
       # kills the run at startup with nothing to read.
-      contents: read
+      contents: read # read the tree; nothing is written back
     uses: monumental-archive/trusted-builder/.github/workflows/verify.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       artifacts-artifact: attested-state
@@ -189,7 +189,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: read # read the tree; nothing is written back
     steps:
       - name: Download the attested state
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -222,7 +222,7 @@ jobs:
     if: inputs.mode == 'phase2'
     needs: [phase2, transport]
     permissions:
-      contents: write
+      contents: write # cut tags, drafts and the final publish
     uses: monumental-archive/trusted-builder/.github/workflows/attach-assets.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       artifacts-artifact: attested-state
@@ -243,7 +243,7 @@ jobs:
     if: inputs.mode == 'phase2'
     needs: [phase2, attach]
     permissions:
-      contents: write
+      contents: write # cut tags, drafts and the final publish
     uses: monumental-archive/trusted-builder/.github/workflows/publish-releases.yml@69df1ab9b60a9104426acc10f583138c429cae12
     with:
       expected-count: 2
@@ -262,7 +262,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: read # read the tree; nothing is written back
       packages: write # push the throwaway image
     outputs:
       digest: ${{ steps.push.outputs.digest }}
@@ -302,10 +302,10 @@ jobs:
     if: inputs.mode == 'oci'
     needs: oci-build
     permissions:
-      id-token: write
-      attestations: write
-      contents: read
-      packages: write
+      id-token: write # Sigstore signing, in a builder that runs no code of ours
+      attestations: write # write the attestation this run produces
+      contents: read # read the tree; nothing is written back
+      packages: write # push the image being attested
     uses: monumental-archive/trusted-builder/.github/workflows/attest-oci.yml@c9b12b141e0d3a887bd57080b5c6ad6682b8b89c
     with:
       subject-name: ghcr.io/monumental-archive/edtf-release-lab
@@ -319,8 +319,8 @@ jobs:
     if: inputs.mode == 'oci'
     needs: [oci-build, oci-attest]
     permissions:
-      contents: read
-      packages: read
+      contents: read # read the tree; nothing is written back
+      packages: read # pull the published image back to verify it
     uses: monumental-archive/trusted-builder/.github/workflows/verify-oci.yml@c9b12b141e0d3a887bd57080b5c6ad6682b8b89c
     with:
       image: ghcr.io/monumental-archive/edtf-release-lab
