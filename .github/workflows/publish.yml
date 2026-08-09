@@ -23,9 +23,12 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@18a4cc2db0435f2962bf1b3b75f57622c3a836f7 # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/publish.yml@9bfb78388c6852827b303bc56269243a81d32dfc # main 2026-08-09
     with:
-      classes: rust-crate
+      # Both classes in one release — the case a scalar `class` could not
+      # express, and the one iiif-server and edtf both need.
+      classes: rust-crate,oci-image
+      smoke-test: scripts/image-smoke.sh
       dry-run: true
     permissions:
       # The union every nested job needs. A reusable workflow can only
