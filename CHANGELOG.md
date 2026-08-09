@@ -6,6 +6,27 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.4.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.3.0...v0.4.0) - 2026-08-09
+
+### Added
+
+- call the shared publish orchestrator as a rehearsal ([#12](https://github.com/monumental-archive/edtf-release-lab/pull/12))
+- add a marker constant to drive a minor bump
+
+### CI
+
+- exercise the signer across the repository boundary ([#10](https://github.com/monumental-archive/edtf-release-lab/pull/10))
+- bump the shared release pin to pick up the sign-off fix
+
+### Dependencies
+
+- update dependency rust to v1.97.1 ([#8](https://github.com/monumental-archive/edtf-release-lab/pull/8))
+
+### Miscellaneous
+
+- adopt the org scaffold and conform the workflows ([#7](https://github.com/monumental-archive/edtf-release-lab/pull/7))
+- sync the commit config with org canon ([#11](https://github.com/monumental-archive/edtf-release-lab/pull/11))
+
 ## [0.3.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.2.0...v0.3.0) - 2026-08-09
 
 ### Added
