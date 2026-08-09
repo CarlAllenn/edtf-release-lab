@@ -7,3 +7,7 @@ description = "Dummy binary crate for release-pipeline testing"
 
 [dependencies]
 lab-core = { workspace = true }
+# A real C dependency, deliberately: it proves the musl C toolchain in the
+# shared rust-binary workflow is load-bearing, the way ring and mimalloc
+# do in iiif-server's production lock.
+mimalloc = "0.1"

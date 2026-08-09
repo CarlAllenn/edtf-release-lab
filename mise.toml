@@ -6,6 +6,8 @@
 lockfile = true
 
 [tools]
+"aqua:rustwasm/wasm-pack" = "0.15.0"
+node = "24.18.1"
 rust = "1.97.1"
 
 [tasks.test]

@@ -23,17 +23,15 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@80aac51104214a7043981dc06d3c4af5510c8b93 # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/publish.yml@f56ba046117ad31dce978e757597ff4fc9297d50 # main 2026-08-09
     with:
-      # Both classes in one release — the case a scalar `class` could not
-      # express, and the one iiif-server and edtf both need.
-      # oci-image ALONE for this run, deliberately. dry-run: false with
-      # rust-crate in the mix would attempt cargo publish for crates that
-      # do not exist on crates.io and have no trusted publisher — the
-      # genuinely irreversible half, and not the half that needs proving.
-      classes: oci-image
-      smoke-test: scripts/image-smoke.sh
-      dry-run: false # prove push, manifest assembly and OCI signing for real
+      # The two new classes, rehearsed together. dry-run keeps the npm
+      # upload out (lab-wasm has no npm package or trusted publisher yet)
+      # while the whole shape — plan, four native legs, collect, pack,
+      # verify pass-through, signing, attach — runs for real.
+      classes: rust-binary,wasm-npm
+      binary-smoke-test: scripts/binary-smoke.sh
+      dry-run: true # rehearsal: nothing irreversible until npm is configured
     permissions:
       # The union every nested job needs. A reusable workflow can only
       # reduce what the caller grants, so a missing scope here kills the
