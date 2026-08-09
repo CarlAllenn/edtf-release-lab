@@ -29,12 +29,12 @@ jobs:
       # upload out (lab-wasm has no npm package or trusted publisher yet)
       # while the whole shape — plan, four native legs, collect, pack,
       # verify pass-through, signing, attach — runs for real.
-      classes: rust-binary,wasm-npm
+      # rust-binary ALONE for the real run: wasm-npm returns once the npm
+      # package exists and its trusted publisher is configured — an npm
+      # publish before that is a guaranteed red run.
+      classes: rust-binary
       binary-smoke-test: scripts/binary-smoke.sh
-      # wasm-pack needs the package crate, not the workspace's virtual
-      # manifest — found by the v0.11.0 rehearsal.
-      crate-dir: crates/lab-wasm
-      dry-run: true # rehearsal: nothing irreversible until npm is configured
+      dry-run: false # prove signing, attach and the published release for real
     permissions:
       # The union every nested job needs. A reusable workflow can only
       # reduce what the caller grants, so a missing scope here kills the

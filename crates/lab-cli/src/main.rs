@@ -6,8 +6,9 @@ static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 fn main() {
     println!(
-        "lab-cli {} (answer: {})",
+        "lab-cli {} on {} (answer: {})",
         env!("CARGO_PKG_VERSION"),
+        std::env::consts::ARCH,
         lab_core::answer()
     );
 }
