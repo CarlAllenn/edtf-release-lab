@@ -23,9 +23,9 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@31ff54864c94dc0ae16038bd483dbdf0ea3fd2c2 # feat/publish-orchestrator
+    uses: monumental-archive/.github/.github/workflows/publish.yml@dcb17da4932c283a485076ec0cd1539ae1bcc613 # feat/publish-orchestrator
     with:
-      class: rust-crate
+      classes: rust-crate
       dry-run: true
     permissions:
       # The union every nested job needs. A reusable workflow can only
