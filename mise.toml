@@ -6,7 +6,7 @@
 lockfile = true
 
 [tools]
-rust = "1.90"
+rust = "1.97.1"
 
 [tasks.test]
 description = "The fixture crates must build and pass — they are what the shared workflows execute against"
