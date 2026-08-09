@@ -6,6 +6,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.7.1](https://github.com/monumental-archive/edtf-release-lab/compare/v0.7.0...v0.7.1) - 2026-08-09
+
+### CI
+
+- pin the orchestrator to main now that it is merged
+- prove the release machinery weekly, not once ([#18](https://github.com/monumental-archive/edtf-release-lab/pull/18))
+
 ## [0.7.0](https://github.com/monumental-archive/edtf-release-lab/compare/v0.6.0...v0.7.0) - 2026-08-09
 
 ### Added
