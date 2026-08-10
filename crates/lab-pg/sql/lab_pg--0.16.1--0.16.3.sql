@@ -1,0 +1,11 @@
+-- Upgrade path from the published 0.16.1. The function set is unchanged;
+-- the pipeline's upgrade executor runs this against a live 0.16.1
+-- installation and reads the version back — proving the path executes,
+-- not merely exists.
+--
+-- Hand-authored, and that is the defect: org .github#132. The canon says
+-- authors write `--next.sql` and the release PR renames it, but nothing
+-- implements the rename, so every release needs a file named for a
+-- version git-cliff has not decided yet. Guessing wrong costs a version:
+-- v0.16.0 and v0.16.2 are both dead drafts for exactly this reason, which
+-- is why prev is still 0.16.1 here.
