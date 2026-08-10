@@ -94,6 +94,8 @@ jobs:
           EXPECTED_ISSUER: https://token.actions.githubusercontent.com
           EXPECTED_SAN: https://github.com/monumental-archive/release-lab/.github/workflows/source-attest.yml@refs/heads/main
         run: |
+          policy="org-github/source-policies/${REPO_NAME}.json"
+          [[ -f "${policy}" ]] || policy="org-github/source-policies/default.json"
           "${RUNNER_TEMP}/sourcetool" checklevelprov \
             --commit "${COMMIT_SHA}" \
             --owner "${REPO_OWNER}" \
@@ -101,7 +103,7 @@ jobs:
             --branch "${REF_NAME}" \
             --expected-issuer "${EXPECTED_ISSUER}" \
             --expected-san "${EXPECTED_SAN}" \
-            --use_local_policy "org-github/source-policies/${REPO_NAME}.json" \
+            --use_local_policy "${policy}" \
             --push=note \
             --output_signed_bundle "${RUNNER_TEMP}/signed_bundle.intoto.jsonl" \
             >> "${GITHUB_STEP_SUMMARY}"
