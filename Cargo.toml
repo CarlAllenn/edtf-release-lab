@@ -13,6 +13,9 @@ default-members = ["crates/lab-core", "crates/lab-cli", "crates/lab-wasm"]
 
 [workspace.package]
 version = "0.14.1"
+# npm provenance validates package.json's repository against the caller
+# repo; wasm-pack copies it from here. Canon shape: inherited, once.
+repository = "https://github.com/monumental-archive/release-lab"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 
