@@ -1,0 +1,6 @@
+-- Upgrade path from the published 0.15.4. The function set is unchanged;
+-- the pipeline's upgrade executor runs this against a live 0.15.4
+-- installation and reads the version back — proving the path executes,
+-- not merely exists. 0.16.0 tagged but never published (its publish run
+-- was refused by the upgrade-path guard, which is this file's lesson):
+-- the path therefore goes straight from 0.15.4 to 0.16.1.
