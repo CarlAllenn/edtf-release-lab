@@ -11,6 +11,12 @@ lives in
 — `docs/release.md`. Repositories conform to that canon; this is where the
 canon is exercised first.
 
+This repo also pilots the SLSA v1.2 source track (org `.github#120`):
+every push to `main` triggers `source-attest`, which signs source
+provenance and a source VSA under this repo's own workflow identity and
+stores them in `refs/notes/commits`. Verify any commit with
+`sourcetool verify` against that identity.
+
 ## Why a separate repository
 
 A reusable workflow cannot run on its own — it needs a caller, and the
