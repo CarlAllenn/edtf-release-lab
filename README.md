@@ -11,11 +11,13 @@ lives in
 — `docs/release.md`. Repositories conform to that canon; this is where the
 canon is exercised first.
 
-This repo also pilots the SLSA v1.2 source track (org `.github#120`):
-every push to `main` triggers `source-attest`, which signs source
-provenance and a source VSA under this repo's own workflow identity and
-stores them in `refs/notes/commits`. Verify any commit with
-`sourcetool verify` against that identity.
+This repo piloted the SLSA v1.2 source track (org `.github#120`):
+signed source provenance + VSAs under this repo's own workflow identity,
+stored in `refs/notes/commits` and stranger-verified. The pilot proved
+the pipeline and surfaced four upstream defects in
+`slsa-framework/source-tool`; the machinery is parked until upstream is
+stable on org-level rulesets. The genesis attestations remain in the
+notes ref as the record.
 
 ## Why a separate repository
 
