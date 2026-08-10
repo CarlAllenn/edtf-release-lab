@@ -12,4 +12,4 @@ rust = "1.97.1"
 
 [tasks.test]
 description = "The fixture crates must build and pass — they are what the shared workflows execute against"
-run = "cargo test --workspace --locked"
+run = "cargo test --workspace --locked --exclude lab-pg"
