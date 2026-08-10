@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.16.1](https://github.com/monumental-archive/release-lab/compare/v0.16.0...v0.16.1) - 2026-08-10
+
+### Fixed
+
+- add the 0.15.4 to 0.16.1 upgrade path ([#80](https://github.com/monumental-archive/release-lab/pull/80))
+
 ## [0.16.0](https://github.com/monumental-archive/release-lab/compare/v0.15.4...v0.16.0) - 2026-08-10
 
 ### Added
