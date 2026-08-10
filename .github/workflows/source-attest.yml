@@ -5,9 +5,9 @@
 # The engine is slsa-framework/source-tool, run as a CLI inside our own
 # workflow — never their reusable workflow, whose certificate would name
 # an identity outside this org, pinned to a mutable ref. Built from a
-# pinned source SHA with a one-line patch (three call sites pass
-# includes_parents=false and 404 on org-level rulesets); drop the patch
-# and consume a release binary once upstream takes the fix.
+# pinned source SHA with .github/source-tool-org.patch applied (org-level
+# ruleset reads 404, dynamic required-check controls dropped); drop the
+# patch and consume a release binary once upstream takes the fixes.
 #
 # The policy is org-owned: source-policies/<repo>.json in the org .github
 # repo, checked out below. No external policy repo is consulted.
@@ -58,18 +58,21 @@ jobs:
           path: org-github
           persist-credentials: false
 
-      - name: Patch org-level ruleset reads
-        # Upstream reads rulesets with includes_parents=false, which 404s
-        # for rulesets applied at org level. One call site already passes
-        # true; align the other three. Remove when upstream fixes it.
+      - name: Check out this repo (patch + policy fallback data)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: self
+          persist-credentials: false
+
+      - name: Patch source-tool for org-level rulesets
+        # Two upstream fixes, applied from .github/source-tool-org.patch:
+        # (1) rulesets read with includes_parents=false 404 when applied
+        # at org level; (2) the backend maps observed controls onto a
+        # fixed framework list, silently dropping dynamic
+        # GH_REQUIRED_CHECK_* controls. Remove when upstream takes them.
         run: |
           cd source-tool
-          sed -i -E 's/(GetRuleset\(ctx, ghc\.Owner\(\), ghc\.Repo\(\), [A-Za-z.()]+, )false\)/\1true)/' pkg/ghcontrol/checklevel.go
-          count="$(grep -c 'GetRuleset(ctx, ghc.Owner(), ghc.Repo(), .*, true)' pkg/ghcontrol/checklevel.go)"
-          if [[ "${count}" != "4" ]]; then
-            echo "patch did not apply cleanly (${count}/4 call sites)" >&2
-            exit 1
-          fi
+          git apply --stat --apply ../self/.github/source-tool-org.patch
 
       - name: Set up Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
@@ -104,6 +107,7 @@ jobs:
             --expected-issuer "${EXPECTED_ISSUER}" \
             --expected-san "${EXPECTED_SAN}" \
             --use_local_policy "${policy}" \
+            --silent-downgrade \
             --push=note \
             --output_signed_bundle "${RUNNER_TEMP}/signed_bundle.intoto.jsonl" \
             >> "${GITHUB_STEP_SUMMARY}"
