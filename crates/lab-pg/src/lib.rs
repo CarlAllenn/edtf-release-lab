@@ -8,6 +8,12 @@ fn lab_answer() -> i32 {
     lab_core::answer() as i32
 }
 
+/// Names the version, so an upgraded installation can say what it runs.
+#[pg_extern]
+fn lab_version() -> String {
+    env!("CARGO_PKG_VERSION").to_string()
+}
+
 #[cfg(any(test, feature = "pg_test"))]
 #[pg_schema]
 mod tests {
