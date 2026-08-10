@@ -1,0 +1,115 @@
+# SLSA v1.2 source track (org .github#120): on every push to main, emit
+# source provenance + a source VSA for the pushed revision, signed under
+# THIS workflow's identity, stored in git notes (refs/notes/commits).
+#
+# The engine is slsa-framework/source-tool, run as a CLI inside our own
+# workflow — never their reusable workflow, whose certificate would name
+# an identity outside this org, pinned to a mutable ref. Built from a
+# pinned source SHA with a one-line patch (three call sites pass
+# includes_parents=false and 404 on org-level rulesets); drop the patch
+# and consume a release binary once upstream takes the fix.
+#
+# The policy is org-owned: source-policies/<repo>.json in the org .github
+# repo, checked out below. No external policy repo is consulted.
+#
+# Chain notes: the provenance chains to the prior commit's attestation in
+# git notes, so a lapse (workflow disabled, run skipped) surfaces as a
+# broken link at the next run rather than silently. Concurrency is
+# serialised without cancellation — every push must append its link.
+#
+# This job holds `contents: write` (push git notes) and `id-token: write`
+# (keyless signing). It runs no caller-supplied code: the release-lab
+# checkout is read only as data (never executed), source-tool is built
+# from a pinned upstream SHA, and the org policy comes from the org
+# governance repo.
+name: source-attest
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: source-attest
+  cancel-in-progress: false
+
+jobs:
+  attest:
+    name: source-attest / attest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # push attestation notes to refs/notes/commits
+      id-token: write # sigstore keyless signing, this workflow's identity
+    steps:
+      - name: Check out source-tool (pinned)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: slsa-framework/source-tool
+          ref: 9fd4af9fa6bd0aa623e20d42438e6759010c1a5f # main 2026-08-10
+          path: source-tool
+          persist-credentials: false
+
+      - name: Check out org policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: monumental-archive/.github
+          path: org-github
+          persist-credentials: false
+
+      - name: Patch org-level ruleset reads
+        # Upstream reads rulesets with includes_parents=false, which 404s
+        # for rulesets applied at org level. One call site already passes
+        # true; align the other three. Remove when upstream fixes it.
+        run: |
+          cd source-tool
+          sed -i -E 's/(GetRuleset\(ctx, ghc\.Owner\(\), ghc\.Repo\(\), [A-Za-z.()]+, )false\)/\1true)/' pkg/ghcontrol/checklevel.go
+          count="$(grep -c 'GetRuleset(ctx, ghc.Owner(), ghc.Repo(), .*, true)' pkg/ghcontrol/checklevel.go)"
+          if [[ "${count}" != "4" ]]; then
+            echo "patch did not apply cleanly (${count}/4 call sites)" >&2
+            exit 1
+          fi
+
+      - name: Set up Go
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: source-tool/go.mod
+          cache-dependency-path: source-tool/go.sum
+
+      - name: Build sourcetool
+        run: |
+          cd source-tool
+          go build -o "${RUNNER_TEMP}/sourcetool" .
+
+      - name: Attest revision
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMIT_SHA: ${{ github.sha }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          REF_NAME: ${{ github.ref_name }}
+          # The identity every prior link in the chain must be signed by:
+          # this workflow, on main.
+          EXPECTED_ISSUER: https://token.actions.githubusercontent.com
+          EXPECTED_SAN: https://github.com/monumental-archive/release-lab/.github/workflows/source-attest.yml@refs/heads/main
+        run: |
+          policy="org-github/source-policies/${REPO_NAME}.json"
+          [[ -f "${policy}" ]] || policy="org-github/source-policies/default.json"
+          "${RUNNER_TEMP}/sourcetool" checklevelprov \
+            --commit "${COMMIT_SHA}" \
+            --owner "${REPO_OWNER}" \
+            --repo "${REPO_NAME}" \
+            --branch "${REF_NAME}" \
+            --expected-issuer "${EXPECTED_ISSUER}" \
+            --expected-san "${EXPECTED_SAN}" \
+            --use_local_policy "${policy}" \
+            --push=note \
+            --output_signed_bundle "${RUNNER_TEMP}/signed_bundle.intoto.jsonl" \
+            >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Upload bundle (run evidence)
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: source-attestation-${{ github.sha }}
+          path: ${{ runner.temp }}/signed_bundle.intoto.jsonl
