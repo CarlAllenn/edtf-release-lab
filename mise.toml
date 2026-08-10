@@ -9,6 +9,8 @@ lockfile = true
 "aqua:rustwasm/wasm-pack" = "0.15.0"
 node = "24.19.0"
 rust = "1.97.1"
+# Build input of the pgrx-extension class; must match the pgrx crate dep.
+"cargo:cargo-pgrx" = "0.19.2"
 
 [tasks.test]
 description = "The fixture crates must build and pass — they are what the shared workflows execute against"
