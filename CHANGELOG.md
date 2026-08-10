@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.15.4](https://github.com/monumental-archive/release-lab/compare/v0.15.3...v0.15.4) - 2026-08-10
+
+### Fixed
+
+- run the width proof for real across every supported major ([#72](https://github.com/monumental-archive/release-lab/pull/72))
+
 ## [0.15.3](https://github.com/monumental-archive/release-lab/compare/v0.15.2...v0.15.3) - 2026-08-10
 
 ### CI
