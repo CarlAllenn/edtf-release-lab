@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.15.3](https://github.com/monumental-archive/release-lab/compare/v0.15.2...v0.15.3) - 2026-08-10
+
+### CI
+
+- pass the workspace exclusion to the binary repro leg ([#69](https://github.com/monumental-archive/release-lab/pull/69))
+
+### Fixed
+
+- rehearse every class across every supported postgres major ([#71](https://github.com/monumental-archive/release-lab/pull/71))
+
 ## [0.15.2](https://github.com/monumental-archive/release-lab/compare/v0.15.1...v0.15.2) - 2026-08-10
 
 ### Fixed
