@@ -1,6 +1,15 @@
 [workspace]
 resolver = "2"
-members = ["crates/lab-core", "crates/lab-cli", "crates/lab-wasm"]
+members = [
+  "crates/lab-core",
+  "crates/lab-cli",
+  "crates/lab-wasm",
+  "crates/lab-pg",
+]
+# lab-pg builds only inside its Postgres container (pgrx); the rust-crate
+# and rust-binary classes exclude it via the caller's `exclude` input, and
+# the local test task mirrors that.
+default-members = ["crates/lab-core", "crates/lab-cli", "crates/lab-wasm"]
 
 [workspace.package]
 version = "0.12.1"

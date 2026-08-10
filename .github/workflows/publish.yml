@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@4e26ae7c6035b524c5ebaa9a66ffc629ae31a4c0 # main 2026-08-09
+    uses: monumental-archive/.github/.github/workflows/publish.yml@965646f434ff27bbc7a88f7a37ecedfe50e65c4e # main 2026-08-10
     with:
       # The two new classes, rehearsed together. dry-run keeps the npm
       # upload out (lab-wasm has no npm package or trusted publisher yet)
@@ -32,9 +32,17 @@ jobs:
       # rust-binary ALONE for the real run: wasm-npm returns once the npm
       # package exists and its trusted publisher is configured — an npm
       # publish before that is a guaranteed red run.
-      classes: rust-binary
+      # Third rehearsal wave: the pgrx-extension class beside rust-binary,
+      # which also proves `exclude` keeps the pgrx crate out of the
+      # runner-side cargo invocations. Two majors in the lab — the matrix
+      # mechanics are identical at five, and the cells are the expensive
+      # part.
+      classes: rust-binary,pgrx-extension
       binary-smoke-test: scripts/binary-smoke.sh
-      dry-run: false # prove signing, attach and the published release for real
+      exclude: lab-pg
+      extension-crate-dir: crates/lab-pg
+      pg-majors: 17,18
+      dry-run: true # rehearsal first; the real run follows a green shape
     permissions:
       # The union every nested job needs. A reusable workflow can only
       # reduce what the caller grants, so a missing scope here kills the
