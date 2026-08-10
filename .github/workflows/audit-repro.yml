@@ -1,0 +1,24 @@
+# Weekly reproducibility audit: rebuild the latest release with the real
+# class workflow and prove the published bytes, via the shared org
+# workflow. Failure files an issue.
+name: audit-repro
+
+on:
+  schedule:
+    # Thursdays 06:00 UTC — its own day, after audit (Mon) and scorecard
+    # (Tue), so one failure never masks another.
+    - cron: "0 6 * * 4"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  repro:
+    uses: monumental-archive/.github/.github/workflows/repro-check.yml@9c05c0b18afb696bc93d0857a811c93a640a8b1c # main 2026-08-10
+    permissions:
+      contents: read # read the release, check out the tag
+      issues: write # a broken reproducibility claim must page
