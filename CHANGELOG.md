@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.16.0](https://github.com/monumental-archive/release-lab/compare/v0.15.4...v0.16.0) - 2026-08-10
+
+### Added
+
+- attest source on every push to main ([#74](https://github.com/monumental-archive/release-lab/pull/74))
+
+### Documentation
+
+- record the source-track pilot in the lab charter ([#78](https://github.com/monumental-archive/release-lab/pull/78))
+
+### Fixed
+
+- apply both source-tool patches, downgrade softly at genesis ([#77](https://github.com/monumental-archive/release-lab/pull/77))
+
+### Miscellaneous
+
+- park the source-track pilot ([#79](https://github.com/monumental-archive/release-lab/pull/79))
+
 ## [0.15.4](https://github.com/monumental-archive/release-lab/compare/v0.15.3...v0.15.4) - 2026-08-10
 
 ### Fixed
