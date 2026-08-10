@@ -32,12 +32,11 @@ jobs:
       # rust-binary ALONE for the real run: wasm-npm returns once the npm
       # package exists and its trusted publisher is configured — an npm
       # publish before that is a guaranteed red run.
-      # The widest possible rehearsal before #28 closes: every class the
-      # canon owns in ONE orchestrated run, every supported PG major —
-      # the first exercise the 14–16 cells ever get. dry-run keeps the
-      # registry uploads out (the lab never touches crates.io, by policy);
-      # the real four-class run follows on the next cycle.
-      classes: rust-crate,rust-binary,oci-image,wasm-npm,pgrx-extension
+      # The width proof, real: every class but rust-crate (the lab never
+      # uploads to crates.io — that class's coexistence and dry-run shape
+      # were proven on v0.15.3), every supported PG major for real. npm,
+      # GHCR, per-major extension images, sandbox DOI, immutable release.
+      classes: rust-binary,oci-image,wasm-npm,pgrx-extension
       smoke-test: scripts/image-smoke.sh
       binary-smoke-test: scripts/binary-smoke.sh
       exclude: lab-pg
@@ -47,7 +46,7 @@ jobs:
       pg-majors: 14,15,16,17,18
       mint-doi: true
       zenodo-base-url: https://sandbox.zenodo.org
-      dry-run: true # five classes in one shape; uploads return next cycle
+      dry-run: false # the full-width proof in substance
     permissions:
       # The union every nested job needs. A reusable workflow can only
       # reduce what the caller grants, so a missing scope here kills the

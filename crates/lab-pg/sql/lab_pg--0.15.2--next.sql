@@ -1,0 +1,4 @@
+-- Upgrade path from the published 0.15.2. The function set is unchanged;
+-- the pipeline's upgrade executor runs this against a live 0.15.2
+-- installation and reads the version back — proving the path executes,
+-- not merely exists. The bump names this file when it decides the version.
