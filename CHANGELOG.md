@@ -6,6 +6,26 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.13.0](https://github.com/monumental-archive/release-lab/compare/v0.12.1...v0.13.0) - 2026-08-10
+
+### Added
+
+- prove the continuous archetype ([#46](https://github.com/monumental-archive/release-lab/pull/46))
+- audit that releases rebuild to their published bytes ([#47](https://github.com/monumental-archive/release-lab/pull/47))
+- add the pgrx extension fixture ([#49](https://github.com/monumental-archive/release-lab/pull/49))
+
+### Dependencies
+
+- update node.js to v24.19.0 ([#43](https://github.com/monumental-archive/release-lab/pull/43))
+
+### Fixed
+
+- drop the deprecated app-id input and advance the release pin ([#45](https://github.com/monumental-archive/release-lab/pull/45))
+
+### Miscellaneous
+
+- carry the licences the manifest already claims ([#48](https://github.com/monumental-archive/release-lab/pull/48))
+
 ## [0.12.1](https://github.com/monumental-archive/release-lab/compare/v0.12.0...v0.12.1) - 2026-08-09
 
 ### Fixed

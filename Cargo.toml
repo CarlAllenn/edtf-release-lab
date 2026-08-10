@@ -12,7 +12,7 @@ members = [
 default-members = ["crates/lab-core", "crates/lab-cli", "crates/lab-wasm"]
 
 [workspace.package]
-version = "0.12.1"
+version = "0.13.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 
@@ -20,4 +20,4 @@ license = "MIT OR Apache-2.0"
 # dependency constraints live here, paired path + version, so the shared
 # prepare-release.sh finds every place the version exists in one file.
 [workspace.dependencies]
-lab-core = { path = "crates/lab-core", version = "0.12.1" }
+lab-core = { path = "crates/lab-core", version = "0.13.0" }
