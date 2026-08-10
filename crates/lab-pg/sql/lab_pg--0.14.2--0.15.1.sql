@@ -1,4 +1,4 @@
--- Upgrade path 0.14.2 -> 0.14.3. The function set is unchanged; the
+-- Upgrade path 0.14.2 -> 0.15.1. The function set is unchanged; the
 -- pipeline's upgrade executor runs this against a live 0.14.2
 -- installation and reads the version back — proving the path executes,
 -- not merely exists.
