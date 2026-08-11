@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.18.1](https://github.com/monumental-archive/release-lab/compare/v0.18.0...v0.18.1) - 2026-08-11
+
+### Fixed
+
+- bump canon pins to v1.5.3 ([#102](https://github.com/monumental-archive/release-lab/pull/102))
+
 ## [0.18.0](https://github.com/monumental-archive/release-lab/compare/v0.17.0...v0.18.0) - 2026-08-11
 
 ### Added
