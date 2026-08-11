@@ -11,6 +11,8 @@ node = "24.19.0"
 rust = "1.97.1"
 # Build input of the pgrx-extension class; must match the pgrx crate dep.
 "cargo:cargo-pgrx" = "0.19.2"
+# Build input of the rust build classes: auditable binaries (.dep-v0).
+"cargo:cargo-auditable" = "0.7.5"
 
 [tasks.test]
 description = "The fixture crates must build and pass — they are what the shared workflows execute against"

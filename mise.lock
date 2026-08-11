@@ -39,6 +39,10 @@ checksum = "sha256:518dc51180c7bc864699c9279b3bc99025bc109123e0249a34ba34d130a50
 url = "https://github.com/wasm-bindgen/wasm-pack/releases/download/v0.15.0/wasm-pack-v0.15.0-x86_64-pc-windows-msvc.tar.gz"
 url_api = "https://api.github.com/repos/wasm-bindgen/wasm-pack/releases/assets/420850448"
 
+[[tools."cargo:cargo-auditable"]]
+version = "0.7.5"
+backend = "cargo:cargo-auditable"
+
 [[tools."cargo:cargo-pgrx"]]
 version = "0.19.2"
 backend = "cargo:cargo-pgrx"
