@@ -7,7 +7,7 @@
 # Dockerfile — a fixture that cannot pass the gate is not representative of
 # the repositories it stands in for. trivy's DS-0002 and DS-0026 both fired
 # on the first version of this file.
-FROM rust:1.97-slim AS build
+FROM rust:1.97-slim@sha256:3b2879047d42784ca9403ad20c51ed3df361a50f1df96f5777d39b4e33aa65cd AS build
 WORKDIR /src
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
