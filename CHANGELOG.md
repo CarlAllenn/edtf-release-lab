@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.17.0](https://github.com/monumental-archive/release-lab/compare/v0.16.3...v0.17.0) - 2026-08-11
+
+### Added
+
+- add the oci metadata rehearsal marker ([#95](https://github.com/monumental-archive/release-lab/pull/95))
+
+### Dependencies
+
+- update dependency monumental-archive/.github to v1.3.2 ([#94](https://github.com/monumental-archive/release-lab/pull/94))
+
 ## [0.16.3](https://github.com/monumental-archive/release-lab/compare/v0.16.2...v0.16.3) - 2026-08-11
 
 ### Dependencies
