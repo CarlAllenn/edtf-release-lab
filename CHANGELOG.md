@@ -6,6 +6,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.18.2](https://github.com/monumental-archive/release-lab/compare/v0.18.1...v0.18.2) - 2026-08-11
+
+### Dependencies
+
+- update dependency monumental-archive/.github to v1.6.0 ([#101](https://github.com/monumental-archive/release-lab/pull/101))
+- bump canon to v1.7.0 and pin the builder stage digest ([#105](https://github.com/monumental-archive/release-lab/pull/105))
+
 ## [0.18.1](https://github.com/monumental-archive/release-lab/compare/v0.18.0...v0.18.1) - 2026-08-11
 
 ### Fixed
