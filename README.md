@@ -120,3 +120,12 @@ cosign verify-blob --bundle <bundle> --certificate-identity "${san}" \
 
 Unlike releases, the notes chain is **not** disposable: each link verifies
 its predecessor, so deleting notes breaks verification for everything after.
+
+## v1.13.0 verdict width
+
+This release exists to prove the canon v1.13.0 verdict machinery at
+full width: post-publish VSAs for every class this repository ships —
+release-asset pull-back for binaries and extension tarballs, tag→digest
+binding plus oci:// verification for the image and the per-major
+extension images, and the npm registry leg. The measured facts land in
+the canon issue tracker, per the run-sheet.
