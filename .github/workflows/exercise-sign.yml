@@ -67,7 +67,7 @@ jobs:
     # Pinned by full SHA, like every caller must. This exact digest is what
     # the verification below pins as --signer-digest, so the two halves of
     # the identity are proven together rather than assumed to agree.
-    uses: monumental-archive/signer/.github/workflows/sign.yml@5ca3bba24a984f3635797bbd371837cf7220e481 # main
+    uses: monumental-archive/signer/.github/workflows/sign.yml@e1be03522b04164d4413996c6f8ea912c4b28577 # main
     with:
       subjects: ${{ needs.build.outputs.subjects }}
     permissions:
