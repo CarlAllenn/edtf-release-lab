@@ -12,7 +12,7 @@ members = [
 default-members = ["crates/lab-core", "crates/lab-cli", "crates/lab-wasm"]
 
 [workspace.package]
-version = "0.20.1"
+version = "0.21.0"
 # npm provenance validates package.json's repository against the caller
 # repo; wasm-pack copies it from here. Canon shape: inherited, once.
 repository = "https://github.com/monumental-archive/release-lab"
@@ -23,4 +23,4 @@ license = "MIT OR Apache-2.0"
 # dependency constraints live here, paired path + version, so the shared
 # prepare-release.sh finds every place the version exists in one file.
 [workspace.dependencies]
-lab-core = { path = "crates/lab-core", version = "0.20.1" }
+lab-core = { path = "crates/lab-core", version = "0.21.0" }
