@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   release:
-    uses: monumental-archive/.github/.github/workflows/release.yml@97f6eb0930296219b75507fd43d9d04892c4c3b9 # v1.7.1
+    uses: monumental-archive/.github/.github/workflows/release.yml@eec2e54f93db5ee704927f8abe0c5cee7f92ceca # v1.9.0
     permissions:
       # Required. A uses: job with no permissions block takes the
       # WORKFLOW-level default, not some ambient grant — and the shared

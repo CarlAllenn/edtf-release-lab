@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   repro-extension:
-    uses: monumental-archive/.github/.github/workflows/repro-check.yml@97f6eb0930296219b75507fd43d9d04892c4c3b9 # v1.7.1
+    uses: monumental-archive/.github/.github/workflows/repro-check.yml@eec2e54f93db5ee704927f8abe0c5cee7f92ceca # v1.9.0
     with:
       class: pgrx-extension
       extension-crate-dir: crates/lab-pg
@@ -27,7 +27,7 @@ jobs:
       issues: write # a broken reproducibility claim must page
 
   repro:
-    uses: monumental-archive/.github/.github/workflows/repro-check.yml@97f6eb0930296219b75507fd43d9d04892c4c3b9 # v1.7.1
+    uses: monumental-archive/.github/.github/workflows/repro-check.yml@eec2e54f93db5ee704927f8abe0c5cee7f92ceca # v1.9.0
     with:
       class: rust-binary
       exclude: lab-pg
