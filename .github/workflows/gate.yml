@@ -23,4 +23,4 @@ jobs:
       # default, so a shared workflow that gains a permission breaks
       # every silent caller as startup_failure with no log.
       contents: read # the gate checks out this repo and the toolbelt
-    uses: monumental-archive/.github/.github/workflows/ci.yml@bd1439418cf430371807296efd0804d05f872d1a # v1.11.0
+    uses: monumental-archive/.github/.github/workflows/ci.yml@c9e057944f1307362f4f12dbdfb6e10e9a2d066d # v1.11.1
