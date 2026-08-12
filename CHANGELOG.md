@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.20.1](https://github.com/monumental-archive/release-lab/compare/v0.20.0...v0.20.1) - 2026-08-12
+
+### Fixed
+
+- record the RUSTSEC-2021-0127 decision in deny.toml ([#129](https://github.com/monumental-archive/release-lab/pull/129))
+
 ## [0.20.0](https://github.com/monumental-archive/release-lab/compare/v0.19.0...v0.20.0) - 2026-08-12
 
 ### Added
