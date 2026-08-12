@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@5bcf469d5881552f658163f808f421ac28dbc7f1 # v1.14.1
+    uses: monumental-archive/.github/.github/workflows/publish.yml@366e25a05d9fcc9b18ab2537697599fcfe55e3d4 # v1.15.0
     with:
       # The two new classes, rehearsed together. dry-run keeps the npm
       # upload out (lab-wasm has no npm package or trusted publisher yet)
