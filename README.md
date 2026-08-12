@@ -15,7 +15,7 @@ The org's release lab: where risky release machinery is proven before any
 production repository runs it. Fixture crates, **real GitHub APIs, real
 credentials, real rulesets**, no registry publishes.
 
-Nothing here ships. The crates have no consumers, no registry is ever
+Nothing here ships, and since the repro gate (.github#118) nothing anywhere ships without a bit-for-bit rebuild agreeing first — this repository is where that gate was proven, red before green. The crates have no consumers, no registry is ever
 published to, and every release cut here is disposable. The canon it proves
 lives in
 [monumental-archive/.github](https://github.com/monumental-archive/.github)
