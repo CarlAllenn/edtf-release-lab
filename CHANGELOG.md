@@ -6,6 +6,19 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.21.0](https://github.com/monumental-archive/release-lab/compare/v0.20.1...v0.21.0) - 2026-08-12
+
+### Added
+
+- land the repo's licence (0BSD) ([#131](https://github.com/monumental-archive/release-lab/pull/131))
+- stand up the badge surface — scorecard publishing and shields ([#133](https://github.com/monumental-archive/release-lab/pull/133))
+
+### Miscellaneous
+
+- update monumental-archive/signer digest to 5ca3bba ([#134](https://github.com/monumental-archive/release-lab/pull/134))
+- update dependency monumental-archive/.github to v1.14.0 ([#135](https://github.com/monumental-archive/release-lab/pull/135))
+- bump every canon pin to v1.15.0 ([#136](https://github.com/monumental-archive/release-lab/pull/136))
+
 ## [0.20.1](https://github.com/monumental-archive/release-lab/compare/v0.20.0...v0.20.1) - 2026-08-12
 
 ### Fixed
