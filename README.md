@@ -1,5 +1,16 @@
 # release-lab
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/monumental-archive/release-lab/badge)](https://scorecard.dev/viewer/?uri=github.com/monumental-archive/release-lab)
+[![SLSA 3](https://img.shields.io/badge/SLSA-Build%20L3-2ea44f)](https://github.com/monumental-archive/.github/blob/main/docs/runbook.md#verifying-as-a-consumer-would)
+
+<!-- Deferred shields, each behind a human step (.github#88):
+Best Practices — form binds a logged-in account; fill from the canon's docs/best-practices.md, then:
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/BP_ID/badge)](https://www.bestpractices.dev/projects/BP_ID)
+REUSE — register the repo at api.reuse.software (FSFE login), then:
+[![REUSE status](https://api.reuse.software/badge/github.com/monumental-archive/release-lab)](https://api.reuse.software/info/github.com/monumental-archive/release-lab)
+-->
+
+[![ghcr](https://img.shields.io/badge/ghcr.io-monumental--archive-blue)](https://github.com/orgs/monumental-archive/packages)
 The org's release lab: where risky release machinery is proven before any
 production repository runs it. Fixture crates, **real GitHub APIs, real
 credentials, real rulesets**, no registry publishes.
