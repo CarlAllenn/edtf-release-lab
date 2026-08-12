@@ -101,3 +101,22 @@ hardening lessons in the canon repository; git history keeps the rest.
 Immutable releases are ON (the draft-then-publish shape depends on it). Old
 lab releases and tags are disposable; delete them freely between runs —
 this repository has no consumers.
+
+## Source attestation
+
+This repository's source chain was founded at `ea49b2f0` (2026-08-12) by
+`.github/workflows/source-attest.yml`, the reserved signing identity.
+Every revision on `main` since carries signed source provenance and a
+source VSA in `refs/notes/commits`. Verify any of them with nothing but
+the published root of trust (`docs/source-assessment.md` in the canon):
+
+```bash
+san="https://github.com/monumental-archive/release-lab"
+san="${san}/.github/workflows/source-attest.yml@refs/heads/main"
+cosign verify-blob --bundle <bundle> --certificate-identity "${san}" \
+  --certificate-oidc-issuer \
+  https://token.actions.githubusercontent.com <statement>
+```
+
+Unlike releases, the notes chain is **not** disposable: each link verifies
+its predecessor, so deleting notes breaks verification for everything after.
