@@ -46,5 +46,5 @@ allow-registry = ["https://github.com/rust-lang/crates.io-index"]
 # statement in the canon's security/vex/ that records the decision
 # (the L2 contract: known, decided, written down).
 ignore = [
-  # { id = "RUSTSEC-0000-0000", reason = "see security/vex/<file> — <one line>" },
+  { id = "RUSTSEC-2021-0127", reason = "see security/vex/RUSTSEC-2021-0127.openvex.json — serde_cbor unmaintained, pgrx's own dependency, not_affected: vulnerable_code_not_present" },
 ]
