@@ -63,7 +63,7 @@ jobs:
     # secret (the audit.yml baseline-drift pattern, zizmor
     # secrets-outside-env). Activation creates the environment and the
     # token — docs/source-track.md, activation checklist.
-    # environment omitted for the measurement run — see the PR body
+    environment: source-attest
     permissions: {} # reads only; the token is the capability
     outputs:
       claims: ${{ steps.claims.outputs.claims }}
@@ -74,7 +74,7 @@ jobs:
         env:
           # Fine-grained read-only PAT that can see org-level ruleset
           # details — the ambient GITHUB_TOKEN cannot (#240).
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SOURCE_RULES_TOKEN }}
         with:
           stage: claims
 
