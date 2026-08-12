@@ -6,6 +6,35 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.19.0](https://github.com/monumental-archive/release-lab/compare/v0.18.3...v0.19.0) - 2026-08-12
+
+### Added
+
+- reserve the source-signing identity with the inert stub ([#109](https://github.com/monumental-archive/release-lab/pull/109))
+- activate the source-track emitter (canon v1.9.0) ([#111](https://github.com/monumental-archive/release-lab/pull/111))
+- take the two-stage source emitter, measuring the ambient token ([#119](https://github.com/monumental-archive/release-lab/pull/119))
+- give the claims job its scoped read token ([#121](https://github.com/monumental-archive/release-lab/pull/121))
+
+### Dependencies
+
+- update monumental-archive/signer digest to b05fe88 ([#112](https://github.com/monumental-archive/release-lab/pull/112))
+- update dependency monumental-archive/.github to v1.8.0 ([#113](https://github.com/monumental-archive/release-lab/pull/113))
+- update dependency monumental-archive/.github to v1.9.0 ([#114](https://github.com/monumental-archive/release-lab/pull/114))
+- update dependency monumental-archive/.github to v1.10.0 ([#115](https://github.com/monumental-archive/release-lab/pull/115))
+- update dependency monumental-archive/.github to v1.10.1 ([#117](https://github.com/monumental-archive/release-lab/pull/117))
+
+### Documentation
+
+- record the founded source chain and how to verify it ([#118](https://github.com/monumental-archive/release-lab/pull/118))
+
+### Miscellaneous
+
+- update monumental-archive/.github to v1.11.0 ([#116](https://github.com/monumental-archive/release-lab/pull/116))
+- update dependency monumental-archive/.github to v1.11.0 ([#120](https://github.com/monumental-archive/release-lab/pull/120))
+- update dependency monumental-archive/.github to v1.11.1 ([#122](https://github.com/monumental-archive/release-lab/pull/122))
+- update monumental-archive/signer digest to 9adecf6 ([#124](https://github.com/monumental-archive/release-lab/pull/124))
+- update dependency monumental-archive/.github to v1.12.0 ([#123](https://github.com/monumental-archive/release-lab/pull/123))
+
 ## [0.18.3](https://github.com/monumental-archive/release-lab/compare/v0.18.2...v0.18.3) - 2026-08-11
 
 ### Fixed
