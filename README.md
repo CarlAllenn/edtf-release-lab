@@ -6,14 +6,15 @@
 [![SLSA Build L3](https://img.shields.io/badge/SLSA-Build%20L3-2ea44f)](https://github.com/monumental-archive/.github/blob/main/docs/runbook.md#verifying-as-a-consumer-would)
 [![SLSA Source L3](https://img.shields.io/badge/SLSA-Source%20L3-2ea44f)](https://github.com/monumental-archive/.github/blob/main/docs/source-track.md)
 [![SLSA Dependencies L2](https://img.shields.io/badge/SLSA-Dependencies%20L2-2ea44f)](https://github.com/monumental-archive/.github/blob/main/docs/dependency-track.md)
-<!-- pending (human step): OpenSSF Best Practices — answer the form from docs/best-practices.md, then set 'bestpractices <BP_ID>' in .badge-states and re-run fix:badges -->
-<!-- pending (human step): REUSE — register at https://api.reuse.software/register (no account: name, email, project URL, confirmation link), then set 'reuse registered' in .badge-states and re-run fix:badges -->
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14067/badge)](https://www.bestpractices.dev/projects/14067)
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/14067/baseline)](https://www.bestpractices.dev/projects/14067)
+[![REUSE status](https://api.reuse.software/badge/github.com/monumental-archive/release-lab)](https://api.reuse.software/info/github.com/monumental-archive/release-lab)
 [![coverage](https://codecov.io/gh/monumental-archive/release-lab/branch/main/graph/badge.svg)](https://codecov.io/gh/monumental-archive/release-lab)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21914272.svg)](https://doi.org/10.5281/zenodo.21914272)
 [![npm](https://img.shields.io/npm/v/%40monumental-archive%2Flab-wasm.svg)](https://www.npmjs.com/package/@monumental-archive/lab-wasm)
 [![ghcr release-lab](https://img.shields.io/badge/ghcr.io-monumental--archive%2Frelease--lab-blue)](https://github.com/orgs/monumental-archive/packages/container/package/release-lab)
 [![ghcr lab-pg](https://img.shields.io/badge/ghcr.io-monumental--archive%2Flab--pg-blue)](https://github.com/orgs/monumental-archive/packages/container/package/lab-pg)
-[![fair-software](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8B-orange)](https://fair-software.eu)
+[![fair-software](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8F-green)](https://fair-software.eu)
 <!-- badges:end -->
 
 The org's release lab: where risky release machinery is proven before any
