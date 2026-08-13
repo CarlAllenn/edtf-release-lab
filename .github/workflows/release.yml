@@ -8,6 +8,16 @@ name: release
 on:
   push:
     branches: [main]
+  # Refresh the open Release PR when a publish completes. The PR is
+  # opened on the push of the PREVIOUS release commit — before that
+  # release has finished publishing — so anything derived from "the
+  # published release" starts from a version about to be superseded.
+  # Measured here on v0.24.3: the PR was created at 11:04 against
+  # v0.24.1, v0.24.2 published at 11:11, and the merge four hours later
+  # carried an upgrade path from the wrong version, burning the tag
+  # (.github#358 seam 5). This re-derives it when the publish lands.
+  release:
+    types: [published]
   # Recovery path: re-run the tag step against a release commit whose first
   # attempt failed. The shared workflow refuses anything else.
   workflow_dispatch: {}
@@ -24,7 +34,7 @@ concurrency:
 
 jobs:
   release:
-    uses: monumental-archive/.github/.github/workflows/release.yml@aa2b32cf385e96fe6ef7872e36ad310d245f6783 # v1.23.1
+    uses: monumental-archive/.github/.github/workflows/release.yml@2f885a2782ffad83b423f9ae0452ca43e0b3158a # v1.24.1
     permissions:
       # Required. A uses: job with no permissions block takes the
       # WORKFLOW-level default, not some ambient grant — and the shared
