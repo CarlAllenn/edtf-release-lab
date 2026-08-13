@@ -1,0 +1,27 @@
+# Fuzz targets (.github#316): built by lint:fuzz-build in the gate
+# (sanitizer none, stable toolchain — targets must compile), run for a
+# bounded interval by audit:fuzz on the Monday cron.
+[package]
+name = "release-lab-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+lab-core = { path = "../crates/lab-core" }
+
+[[bin]]
+name = "parse_marker"
+path = "fuzz_targets/parse_marker.rs"
+test = false
+doc = false
+bench = false
+
+# Standalone: its own workspace and lockfile, outside the release
+# workspace the classes build (a fuzz harness is not a publishable
+# member).
+[workspace]

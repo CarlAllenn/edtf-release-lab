@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/continuous.yml@a567e3c97791dc623b5303e3d97ff75e390ee74a # v1.19.0
+    uses: monumental-archive/.github/.github/workflows/continuous.yml@14da382cd543141d632b2210a485fbe47455ce68 # v1.20.0
     with:
       smoke-test: scripts/image-smoke.sh
       prepare: scripts/oci-prepare.sh

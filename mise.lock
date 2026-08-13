@@ -43,6 +43,10 @@ url_api = "https://api.github.com/repos/wasm-bindgen/wasm-pack/releases/assets/4
 version = "0.7.5"
 backend = "cargo:cargo-auditable"
 
+[[tools."cargo:cargo-fuzz"]]
+version = "0.13.2"
+backend = "cargo:cargo-fuzz"
+
 [[tools."cargo:cargo-pgrx"]]
 version = "0.19.2"
 backend = "cargo:cargo-pgrx"
@@ -82,3 +86,6 @@ url = "https://nodejs.org/dist/v24.19.0/node-v24.19.0-win-x64.zip"
 [[tools.rust]]
 version = "1.97.1"
 backend = "core:rust"
+
+[tools.rust.options]
+components = "llvm-tools"
