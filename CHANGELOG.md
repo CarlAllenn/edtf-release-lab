@@ -6,6 +6,30 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.23.0](https://github.com/monumental-archive/release-lab/compare/v0.22.1...v0.23.0) - 2026-08-13
+
+### Added
+
+- adopt the derived badge block and citation ([#159](https://github.com/monumental-archive/release-lab/pull/159))
+- consume canon v1.19.0 — the first real DOI path ([#160](https://github.com/monumental-archive/release-lab/pull/160))
+- consume canon v1.20.0 with fuzz targets and a coverage floor ([#162](https://github.com/monumental-archive/release-lab/pull/162))
+
+### Documentation
+
+- describe the lab as it is, not as it was ([#152](https://github.com/monumental-archive/release-lab/pull/152))
+- record the 0BSD/dual-licence difference as deliberate (#155) ([#157](https://github.com/monumental-archive/release-lab/pull/157))
+
+### Fixed
+
+- derive --signer-digest instead of hand-writing it ([#156](https://github.com/monumental-archive/release-lab/pull/156))
+
+### Miscellaneous
+
+- update monumental-archive/signer digest to 2c64eee ([#153](https://github.com/monumental-archive/release-lab/pull/153))
+- update dependency monumental-archive/.github to v1.18.0 ([#158](https://github.com/monumental-archive/release-lab/pull/158))
+- update first-party canon ([#161](https://github.com/monumental-archive/release-lab/pull/161))
+- update dependency monumental-archive/.github to v1.21.0 ([#163](https://github.com/monumental-archive/release-lab/pull/163))
+
 ## [0.22.1](https://github.com/monumental-archive/release-lab/compare/v0.22.0...v0.22.1) - 2026-08-13
 
 ### Fixed
