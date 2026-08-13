@@ -8,6 +8,7 @@
 [![SLSA Dependencies L2](https://img.shields.io/badge/SLSA-Dependencies%20L2-2ea44f)](https://github.com/monumental-archive/.github/blob/main/docs/dependency-track.md)
 <!-- pending (human step): OpenSSF Best Practices — answer the form from docs/best-practices.md, then set 'bestpractices <BP_ID>' in .badge-states and re-run fix:badges -->
 <!-- pending (human step): REUSE — register at api.reuse.software (FSFE login), then set 'reuse registered' in .badge-states and re-run fix:badges -->
+[![coverage](https://codecov.io/gh/monumental-archive/release-lab/branch/main/graph/badge.svg)](https://codecov.io/gh/monumental-archive/release-lab)
 <!-- pending (first mint): DOI — the concept DOI lands in CITATION.cff after the first release mints it; re-run fix:badges -->
 [![npm](https://img.shields.io/npm/v/%40monumental-archive%2Flab-wasm.svg)](https://www.npmjs.com/package/@monumental-archive/lab-wasm)
 [![ghcr release-lab](https://img.shields.io/badge/ghcr.io-monumental--archive%2Frelease--lab-blue)](https://github.com/orgs/monumental-archive/packages/container/package/release-lab)

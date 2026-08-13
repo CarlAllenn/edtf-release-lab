@@ -5,14 +5,25 @@
 [settings]
 lockfile = true
 
+[env]
+# Workspace members whose tests cannot run on the gate runner; consumed
+# by coverage:check, mirroring the test task's --exclude (lab-pg needs
+# a live postgres — the pgrx tests run in the class's own containers).
+COVERAGE_EXCLUDE = "lab-pg"
+
 [tools]
 "aqua:rustwasm/wasm-pack" = "0.15.0"
 node = "24.19.0"
-rust = "1.97.1"
+# llvm-tools: build input of coverage:check (the ratchet), installed
+# with the toolchain, never mid-run.
+rust = { version = "1.97.1", components = "llvm-tools" }
 # Build input of the pgrx-extension class; must match the pgrx crate dep.
 "cargo:cargo-pgrx" = "0.19.2"
 # Build input of the rust build classes: auditable binaries (.dep-v0).
 "cargo:cargo-auditable" = "0.7.5"
+# Build input of lint:fuzz-build / audit:fuzz (.github#316); cargo
+# backend like cargo-pgrx, sanitizer-none on the stable pin.
+"cargo:cargo-fuzz" = "0.13.2"
 
 [tasks.test]
 description = "The fixture crates must build and pass — they are what the shared workflows execute against"

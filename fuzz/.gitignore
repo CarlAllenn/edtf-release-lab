@@ -1,0 +1,4 @@
+# Build output and crash reproducers stay untracked; the corpus is
+# deliberately tracked — commit interesting finds (.github#316).
+target/
+artifacts/
