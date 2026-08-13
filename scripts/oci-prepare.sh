@@ -28,7 +28,23 @@ rustup target add "${target}"
 sudo apt-get update -qq
 sudo apt-get install -y -qq musl-tools
 
-cargo build --release --locked --target "${target}" --bin lab-cli
+# cargo-auditable is a build input like the toolchain itself, pinned in
+# this repository's mise config (cargo:cargo-auditable) — asserted, never
+# installed here; an unpinned install on a release leg is a runner
+# mutation. The same assertion the rust-binary class makes.
+command -v cargo-auditable > /dev/null || {
+  echo "::error::cargo-auditable missing — pin cargo:cargo-auditable in this repository's mise config" >&2
+  exit 1
+}
+# `auditable`, matching the rust-binary class: the shipped binary carries
+# its dependency tree in the .dep-v0 linker section, so a scanner reading
+# the IMAGE sees the Rust surface of the artifact inside it
+# (docs/dependency-track.md, the SBOM's image-side closure). The old
+# in-container build never did this, so a scratch image was opaque to
+# exactly the scanning the org runs against published digests. Stripping
+# is already disabled by the class env, which is what keeps the section
+# alive.
+cargo auditable build --release --locked --target "${target}" --bin lab-cli
 
 # install(1) rather than cp: the mode is asserted, not inherited, so the
 # COPY into the image cannot depend on the checkout's umask.
