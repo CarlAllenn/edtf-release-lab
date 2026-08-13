@@ -64,9 +64,16 @@ jobs:
   sign:
     name: Sign
     needs: build
-    # Pinned by full SHA, like every caller must. This exact digest is what
-    # the verification below pins as --signer-digest, so the two halves of
-    # the identity are proven together rather than assumed to agree.
+    # Pinned by full SHA, like every caller must. This line is the ONE
+    # statement of the trusted signer in this tree: the verification below
+    # derives --signer-digest from it at run time (verify-signed reads this
+    # file at the running commit), so the two halves of the identity are
+    # proven together by construction rather than kept in agreement by
+    # hand. The previous shape — the digest repeated as a literal in the
+    # verify commands — sat frozen at the signer's first commit while this
+    # line was bumped twice, and this repo deliberately carries no
+    # security/signer.pin for a lint to catch it against: a consumer has
+    # no verdict to render (#314).
     uses: monumental-archive/signer/.github/workflows/sign.yml@2c64eee47bf7b83a807be4361326db588b91645b # main
     with:
       subjects: ${{ needs.build.outputs.subjects }}
@@ -95,36 +102,25 @@ jobs:
           name: ${{ needs.sign.outputs.bundle-artifact }}
           path: bundle
 
+      # Both verifications pin --signer-workflow (the path, a prefix
+      # regex) and --signer-digest (OID .10, the signer commit) — the
+      # digest derived from this file's own sign.yml uses: line, never
+      # written by hand (#314; lint:signer-pin reddens a literal).
       - name: Verify against GitHub's stored attestation
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          # --signer-workflow is a PREFIX regex over the certificate SAN and
-          # pins the path only, never the ref; --signer-digest pins OID .10,
-          # the signer commit. Pinning one without the other leaves any
-          # branch of the signer repository able to mint a matching
-          # identity, so the canon pins both.
-          for f in out/fixture-one.txt out/fixture-two.txt; do
-            gh attestation verify "${f}" \
-              --repo "${GITHUB_REPOSITORY}" \
-              --signer-workflow monumental-archive/signer/.github/workflows/sign.yml \
-              --signer-digest 3c30fc243b42b95a7fb09934b3ab19292e051ba2 \
-              --deny-self-hosted-runners
-          done
+        uses: monumental-archive/.github/.github/actions/verify-signed@0b1d19fd6daad133b9e5b850489079fe12f70adf # v1.18.0
+        with:
+          files: out/fixture-one.txt out/fixture-two.txt
 
-      - name: Verify offline against the returned bundle
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Locate the returned bundle
+        id: bundle
         run: |
           set -euo pipefail
           bundle=$(find bundle -name '*.jsonl' -o -name '*.json' | head -n 1)
           echo "bundle: ${bundle}"
-          for f in out/fixture-one.txt out/fixture-two.txt; do
-            gh attestation verify "${f}" \
-              --bundle "${bundle}" \
-              --repo "${GITHUB_REPOSITORY}" \
-              --signer-workflow monumental-archive/signer/.github/workflows/sign.yml \
-              --signer-digest 3c30fc243b42b95a7fb09934b3ab19292e051ba2 \
-              --deny-self-hosted-runners
-          done
+          echo "path=${bundle}" >> "${GITHUB_OUTPUT}"
+
+      - name: Verify offline against the returned bundle
+        uses: monumental-archive/.github/.github/actions/verify-signed@0b1d19fd6daad133b9e5b850489079fe12f70adf # v1.18.0
+        with:
+          files: out/fixture-one.txt out/fixture-two.txt
+          bundle: ${{ steps.bundle.outputs.path }}
