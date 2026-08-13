@@ -25,13 +25,6 @@ jobs:
   publish:
     uses: monumental-archive/.github/.github/workflows/publish.yml@ece79a7804c7b522670c0f052cd40c4312eadbbf # v1.17.0
     with:
-      # The two new classes, rehearsed together. dry-run keeps the npm
-      # upload out (lab-wasm has no npm package or trusted publisher yet)
-      # while the whole shape — plan, four native legs, collect, pack,
-      # verify pass-through, signing, attach — runs for real.
-      # rust-binary ALONE for the real run: wasm-npm returns once the npm
-      # package exists and its trusted publisher is configured — an npm
-      # publish before that is a guaranteed red run.
       # The width proof, real: every class but rust-crate (the lab never
       # uploads to crates.io — that class's coexistence and dry-run shape
       # were proven on v0.15.3), every supported PG major for real. npm,

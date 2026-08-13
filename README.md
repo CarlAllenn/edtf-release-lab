@@ -11,24 +11,26 @@ REUSE — register the repo at api.reuse.software (FSFE login), then:
 -->
 
 [![ghcr](https://img.shields.io/badge/ghcr.io-monumental--archive-blue)](https://github.com/orgs/monumental-archive/packages)
+
 The org's release lab: where risky release machinery is proven before any
 production repository runs it. Fixture crates, **real GitHub APIs, real
-credentials, real rulesets**, no registry publishes.
+credentials, real rulesets, real registries**.
 
-Nothing here ships. The crates have no consumers, no registry is ever
-published to, and every release cut here is disposable. The canon it proves
-lives in
+The publishes are real, and that is the point — a rehearsal that ships
+nowhere proves nothing. `@monumental-archive/lab-wasm` is on npm with
+provenance, the images are on GHCR, the releases are immutable and carry
+their full evidence bundles. What is disposable is the *meaning*: the
+crates have no consumers and the version numbers are spent freely.
+
+One line the lab never crosses: **crates.io**. Uploads there are
+yank-only and a fixture has no business holding a name, so `rust-crate`
+is the single class rehearsed dry. DOIs are minted against the Zenodo
+sandbox for the same reason.
+
+The canon it proves lives in
 [monumental-archive/.github](https://github.com/monumental-archive/.github)
 — `docs/release.md`. Repositories conform to that canon; this is where the
 canon is exercised first.
-
-This repo piloted the SLSA v1.2 source track (org `.github#120`):
-signed source provenance + VSAs under this repo's own workflow identity,
-stored in `refs/notes/commits` and stranger-verified. The pilot proved
-the pipeline and surfaced four upstream defects in
-`slsa-framework/source-tool`; the machinery is parked until upstream is
-stable on org-level rulesets. The genesis attestations remain in the
-notes ref as the record.
 
 ## Why a separate repository
 
@@ -57,22 +59,61 @@ shared workflow is permanent for every tag already pinned to it.** Every
 change to a shared workflow needs a foreign caller to prove it before any
 production repository bumps its pin.
 
-## Phase 1 canon: proven here
+## What is exercised here
 
-`release.yml` is the caller stub for the shared phase-1 workflow
-(`monumental-archive/.github/.github/workflows/release.yml`, SHA-pinned).
-This repository holds no release logic of its own — it is the first
-conforming consumer.
+The canon's release machinery is complete (`.github#28`, closed): both
+archetypes, every artifact class, repro gate, evidence bundles, signed
+verdicts, DOIs. All of it ran here first. Four fixture crates carry it —
+minimal, but structurally honest enough to make the shared workflows
+execute their real code paths and reach their real endpoints:
 
-Proving it live caught four defects before any production repository was
-touched:
+| Fixture | Class it feeds |
+| --- | --- |
+| `lab-core` | rust-crate (the library, and the internal path+version dependency shape) |
+| `lab-cli` | rust-binary, and the binary that lands in the image |
+| `lab-wasm` | wasm-npm |
+| `lab-pg` | pgrx-extension, and its per-major extension images |
 
-| Defect | How it presented | Fix |
+The caller stubs are the entire surface a conforming repository owns; the
+logic they invoke lives in the canon, SHA-pinned:
+
+| Stub | What it proves |
+| --- | --- |
+| `gate.yml` | the shared CI gate, called across a repository boundary |
+| `release.yml` | phase 1 — version decision, changelog, Release PR, and on merge the App-minted `v*` tag and draft release |
+| `publish.yml` | phase 2 at full width — `rust-binary`, `oci-image`, `wasm-npm` and `pgrx-extension` built for real across every supported Postgres major, repro-gated, signed through the org signer, pushed to GHCR and npm, with a sandbox DOI and an evidence bundle |
+| `continuous.yml` | the continuous archetype — digest publish on merge, weekly rebuild, no tags, no versions |
+| `exercise-sign.yml` | the org signer across a repository boundary: bytes built here, signed there without the signer ever seeing them, verified the way a stranger would |
+| `source-attest.yml` | this repository's reserved source-signing identity (below) |
+| `audit.yml`, `audit-repro.yml`, `scorecard.yml` | the Monday advisory audit, the Thursday cold rebuild of the latest published release, and the copied Scorecard stub |
+
+Two classes are deliberately not run here for real. **rust-crate** is
+rehearsed dry — the lab never uploads to crates.io — and its coexistence
+and dry-run shape were proven on v0.15.3. **source-archive** is the
+canon's own phase 2, exercised by `.github` on itself.
+
+Both archetypes coexisting in one repository is intentional, not
+leftover: `continuous.yml` refuses tags and `publish.yml` refuses
+branches, and that pair of inverse guards is only tested where both live.
+
+## What proving here has caught
+
+Each of these was found on a real run, before any production repository
+was touched, and none of them was visible to a linter:
+
+| Found | How it presented | Resolution |
 | --- | --- | --- |
-| Canon checkout used `github.workflow_sha` | `upload-pack: not our ref` — the entry-point workflow's SHA is the *caller's* commit | `github.job_workflow_sha` |
-| Same bug latent in the shared CI gate | never failed: its only caller lives in the same repo, where both SHAs coincide | fixed together |
+| Canon checkout used `github.workflow_sha` | `upload-pack: not our ref` — the entry-point workflow's SHA is the *caller's* commit | `github.job_workflow_sha`, and ultimately the `$/.github/actions/canon` self-reference (`.github#165`) |
+| The same bug, latent in the shared CI gate | never failed: its only caller lived in the same repository, where both SHAs coincide | fixed together |
 | `git-cliff` absent from the toolbelt | `git: 'cliff' is not a git command` | belt standup |
 | Tag-mint App lacked `pull_requests: write` | `The permissions requested are not granted to this installation` | App permission + install approval |
+| An undecided advisory in a release SBOM | the dependency gate refused to publish v0.19.1 | dependency-keyed VEX; RUSTSEC-2021-0127 decided on v0.20.1 |
+| The containerised `cargo build` was not reproducible | the repro gate went red on all seven image digests at v0.21.0, and nothing published | `.github#295` — five of seven fixed by `--provenance=false --sbom=false` + `rewrite-timestamp`, the last two by moving the compile out of the Dockerfile; bit-for-bit on v0.22.1 |
+
+The last row is the shape worth keeping in mind. The gate blocked the
+registry uploads, the tags, the append-only Sigstore entries and the
+release itself; the entire cost of the finding was a disposable lab
+version number.
 
 ## The `v*` tag-creation lock
 
@@ -93,30 +134,20 @@ the lock works perfectly or does not exist:
 `current_user_can_bypass: never` is the check that the org owner is bound
 too.
 
-## Phase 2: not yet
-
-Phase-2 canon (build, publish, prove, sign) is not designed. When it is,
-this repository grows **class-representative fixtures** — one per artifact
-class, each minimal but structurally honest enough to make the shared build
-workflows execute their real code paths and reach their real network
-endpoints. Toy crates cannot do that: an egress allowlist derived from a
-fixture that never pulls a real toolchain is correct for nothing.
-
-The previous generation of scenarios drove one project's legacy pipeline
-and has been removed, along with the one-off repros that diagnosed past
-failures. What they found is recorded in `docs/slsa-reference.md` and the
-hardening lessons in the canon repository; git history keeps the rest.
-
-## Housekeeping
-
-Immutable releases are ON (the draft-then-publish shape depends on it). Old
-lab releases and tags are disposable; delete them freely between runs —
-this repository has no consumers.
-
 ## Source attestation
 
-This repository's source chain was founded at `ea49b2f0` (2026-08-12) by
-`.github/workflows/source-attest.yml`, the reserved signing identity.
+This repository is one of the org's three source-track emitters
+(`.github#207`) and was the first: it proved the emitter end to end before
+`signer` and the canon founded their own chains, and the org's Source L3
+claim moved only once all three were stranger-verified.
+
+The chain was founded at `ea49b2f0` (2026-08-12) by
+`.github/workflows/source-attest.yml`, the reserved signing identity. That
+file's path at `@refs/heads/main` **is** the identity — a keyless
+certificate names the workflow path plus ref — so moving or renaming it is
+a breaking change to the root-of-trust contract, and its contents change
+freely while its path never does.
+
 Every revision on `main` since carries signed source provenance and a
 source VSA in `refs/notes/commits`. Verify any of them with nothing but
 the published root of trust (`docs/source-assessment.md` in the canon):
@@ -129,14 +160,26 @@ cosign verify-blob --bundle <bundle> --certificate-identity "${san}" \
   https://token.actions.githubusercontent.com <statement>
 ```
 
+The first five links claim `SLSA_SOURCE_LEVEL_2` and stay that way: they
+were emitted before the claims job held a token that could read org-level
+tag-ruleset details, so the VSA under-claimed rather than assert a control
+it could not see. They are not backfilled — honest degradation is a real
+behaviour here, not a design intention.
+
+An earlier pilot (2026-08-10) drove `slsa-framework/source-tool` and
+parked on four upstream defects (watch `.github#199`); the org built its
+own emitter instead of waiting. Those genesis attestations remain in this
+repository's notes as the historical record — a different dialect, not a
+link in the current chain.
+
 Unlike releases, the notes chain is **not** disposable: each link verifies
 its predecessor, so deleting notes breaks verification for everything after.
 
-## v1.13.0 verdict width
+## Housekeeping
 
-This release exists to prove the canon v1.13.0 verdict machinery at
-full width: post-publish VSAs for every class this repository ships —
-release-asset pull-back for binaries and extension tarballs, tag→digest
-binding plus oci:// verification for the image and the per-major
-extension images, and the npm registry leg. The measured facts land in
-the canon issue tracker, per the run-sheet.
+Immutable releases are ON (the draft-then-publish shape depends on it). Old
+lab releases and tags are disposable; delete them freely between runs —
+this repository has no consumers. One exception: the **latest** release is
+load-bearing, because the Thursday `audit-repro` job rebuilds it and
+compares against its published `checksums.txt`. Delete that one and the
+audit reddens until the next release is cut.

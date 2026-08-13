@@ -1,11 +1,17 @@
 # REUSE.toml (spec 3.3): machine-readable licensing for every file in
-# the canon. The licence is 0BSD — the public-domain-equivalent,
-# OSI-approved, zero-condition licence — chosen deliberately for this
-# repository (#214): the canon exists to be copied, scaffold and
-# workflow-templates above all, and a licence that demands nothing of
-# the copier is the licence that matches the intent. Aggregate
-# precedence over the whole tree: configuration and workflows do not
-# carry per-file headers.
+# this repository, landed by .github#214's sweep. 0BSD — the
+# public-domain-equivalent, OSI-approved, zero-condition licence —
+# because a fixture tree that exists to be read and copied should demand
+# nothing of the reader. Aggregate precedence over the whole tree:
+# configuration and workflows do not carry per-file headers.
+#
+# UNRESOLVED, and recorded rather than papered over: `**` labels the
+# crate sources 0BSD, while Cargo.toml declares `MIT OR Apache-2.0` and
+# the repository ships LICENSE-MIT and LICENSE-APACHE to back it — which
+# is what @monumental-archive/lab-wasm publishes to npm. The dual licence
+# is not simply stale: deny.toml's allowlist (a canon decision, not a
+# repo edit) has no 0BSD entry, so 0BSD crates would fail lint:deny in
+# the gate. Nothing lints the disagreement, which is why it survived.
 version = 1
 SPDX-PackageName = "release-lab"
 SPDX-PackageSupplier = "Carl Allen <carl.allen313@gmail.com>"
