@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Dummy pgrx extension for release-pipeline testing"
+description = "Fixture pgrx extension for the org release pipeline"
 
 [lib]
 crate-type = ["cdylib", "lib"]

@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Dummy binary crate for release-pipeline testing"
+description = "Fixture binary crate for the org release pipeline"
 
 [dependencies]
 lab-core = { workspace = true }

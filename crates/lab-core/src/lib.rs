@@ -1,4 +1,5 @@
-//! Dummy crate: exists so the release pipeline has a workspace to version.
+//! Fixture crate: the workspace the org release pipeline versions,
+//! builds and publishes. No consumers; the classes are what matter.
 pub fn answer() -> u32 {
     42
 }
