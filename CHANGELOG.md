@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.22.1](https://github.com/monumental-archive/release-lab/compare/v0.22.0...v0.22.1) - 2026-08-13
+
+### Fixed
+
+- build the image binary auditable, like every other rust artifact ([#150](https://github.com/monumental-archive/release-lab/pull/150))
+
+### Miscellaneous
+
+- update dependency monumental-archive/.github to v1.17.0 ([#149](https://github.com/monumental-archive/release-lab/pull/149))
+
 ## [0.22.0](https://github.com/monumental-archive/release-lab/compare/v0.21.1...v0.22.0) - 2026-08-13
 
 ### Added
