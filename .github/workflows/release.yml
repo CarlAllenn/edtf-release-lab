@@ -14,9 +14,12 @@ on:
 
 permissions: {}
 
-# Never cancel a release mid-flight; queue instead. Keyed per commit.
+# Never cancel a release mid-flight; queue instead — and the group is the
+# WORKFLOW, never the commit: the Release-PR machinery works on two fixed
+# branches, so per-commit keying let two merges race and killed one
+# mid-script on a 403 (.github#316, measured here 2026-08-13).
 concurrency:
-  group: release-${{ github.sha }}
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
