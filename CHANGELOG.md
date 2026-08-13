@@ -6,6 +6,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.24.2](https://github.com/monumental-archive/release-lab/compare/v0.24.1...v0.24.2) - 2026-08-13
+
+### Fixed
+
+- grant the release stub the id-token its callee now needs ([#176](https://github.com/monumental-archive/release-lab/pull/176))
+
+### Miscellaneous
+
+- wire the dependency-review stub ([#172](https://github.com/monumental-archive/release-lab/pull/172))
+- update monumental-archive/signer digest to 0714ab7 ([#175](https://github.com/monumental-archive/release-lab/pull/175))
+- bump the canon pin to v1.23.1 and the signer to 0714ab7 ([#174](https://github.com/monumental-archive/release-lab/pull/174))
+
 ## [0.24.1](https://github.com/monumental-archive/release-lab/compare/v0.24.0...v0.24.1) - 2026-08-13
 
 ### Fixed
