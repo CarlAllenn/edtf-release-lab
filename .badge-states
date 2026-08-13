@@ -1,0 +1,7 @@
+# Badge states nothing can derive (.github#316): pending human
+# steps and the names the derivation cannot guess — see the canon's
+# scaffold/README-badges.md for the catalogue and vocabulary.
+bestpractices pending
+reuse pending
+npm lab-wasm
+ghcr lab-pg
