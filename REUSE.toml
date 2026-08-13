@@ -1,17 +1,23 @@
 # REUSE.toml (spec 3.3): machine-readable licensing for every file in
 # this repository, landed by .github#214's sweep. 0BSD — the
 # public-domain-equivalent, OSI-approved, zero-condition licence —
-# because a fixture tree that exists to be read and copied should demand
-# nothing of the reader. Aggregate precedence over the whole tree:
-# configuration and workflows do not carry per-file headers.
+# because a test fixture should demand nothing of anyone who reads it.
+# Aggregate precedence over the whole tree: configuration and workflows
+# do not carry per-file headers.
 #
-# UNRESOLVED, and recorded rather than papered over: `**` labels the
-# crate sources 0BSD, while Cargo.toml declares `MIT OR Apache-2.0` and
-# the repository ships LICENSE-MIT and LICENSE-APACHE to back it — which
-# is what @monumental-archive/lab-wasm publishes to npm. The dual licence
-# is not simply stale: deny.toml's allowlist (a canon decision, not a
-# repo edit) has no 0BSD entry, so 0BSD crates would fail lint:deny in
-# the gate. Nothing lints the disagreement, which is why it survived.
+# DECIDED (#155): `**` and Cargo.toml's `MIT OR Apache-2.0` differ on
+# purpose, and `**` is the statement about these files. Every file here,
+# crate sources included, is 0BSD; the lab is a fixture and nothing in
+# it is withheld from anyone. Cargo.toml's dual licence is a fixture
+# INPUT, not a competing claim: it drives a compound SPDX expression
+# through wasm-pack -> package.json -> npm so that path is exercised
+# (every published @monumental-archive/lab-wasm carries it), and it
+# keeps the workspace crates inside deny.toml's allowlist, which has no
+# 0BSD entry and is a canon decision rather than a repo edit. One
+# copyright holder throughout, so both grants hold at once and the
+# broader of the two is the one on the source. Do not reconcile them,
+# and do not build a linter that compares the two expressions: on this
+# repo it reports a finding where the answer is "deliberate".
 version = 1
 SPDX-PackageName = "release-lab"
 SPDX-PackageSupplier = "Carl Allen <carl.allen313@gmail.com>"
