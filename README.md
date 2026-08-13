@@ -27,8 +27,14 @@ crates have no consumers and the version numbers are spent freely.
 
 One line the lab never crosses: **crates.io**. Uploads there are
 yank-only and a fixture has no business holding a name, so `rust-crate`
-is the single class rehearsed dry. DOIs are minted against the Zenodo
-sandbox for the same reason.
+is the single class rehearsed dry. DOIs are deliberately NOT grouped
+with that line (.github#316): a crates.io name is a scarce global
+namespace a fixture would squat; a DOI is a citation record that
+squats nothing. Every lab release mints a **real, permanent** version
+DOI under the lab's one concept record — that pile-up at rehearsal
+cadence is the design, because a rehearsal against a mirrored sandbox
+API never proves the path the permanent record takes, and proving that
+path is this repository's entire job.
 
 The canon it proves lives in
 [monumental-archive/.github](https://github.com/monumental-archive/.github)
@@ -84,7 +90,7 @@ logic they invoke lives in the canon, SHA-pinned:
 | --- | --- |
 | `gate.yml` | the shared CI gate, called across a repository boundary |
 | `release.yml` | phase 1 — version decision, changelog, Release PR, and on merge the App-minted `v*` tag and draft release |
-| `publish.yml` | phase 2 at full width — `rust-binary`, `oci-image`, `wasm-npm` and `pgrx-extension` built for real across every supported Postgres major, repro-gated, signed through the org signer, pushed to GHCR and npm, with a sandbox DOI and an evidence bundle |
+| `publish.yml` | phase 2 at full width — `rust-binary`, `oci-image`, `wasm-npm` and `pgrx-extension` built for real across every supported Postgres major, repro-gated, signed through the org signer, pushed to GHCR and npm, with a real version DOI and an evidence bundle |
 | `continuous.yml` | the continuous archetype — digest publish on merge, weekly rebuild, no tags, no versions |
 | `exercise-sign.yml` | the org signer across a repository boundary: bytes built here, signed there without the signer ever seeing them, verified the way a stranger would |
 | `source-attest.yml` | this repository's reserved source-signing identity (below) |
