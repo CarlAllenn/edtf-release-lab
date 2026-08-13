@@ -38,6 +38,7 @@ jobs:
       # GHCR, per-major extension images, sandbox DOI, immutable release.
       classes: rust-binary,oci-image,wasm-npm,pgrx-extension
       smoke-test: scripts/image-smoke.sh
+      prepare: scripts/oci-prepare.sh
       binary-smoke-test: scripts/binary-smoke.sh
       exclude: lab-pg
       crate-dir: crates/lab-wasm
