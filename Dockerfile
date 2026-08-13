@@ -1,25 +1,20 @@
-# Class-representative fixture, not a dummy: a real base image, a real
-# binary built from this workspace, and a runtime that can be smoke-tested
-# by running it. A `FROM scratch` marker file would exercise the workflow's
-# plumbing while proving nothing about a build that can actually fail.
-#
-# It is also conformant, because the org gate scans it like any other
-# Dockerfile — a fixture that cannot pass the gate is not representative of
-# the repositories it stands in for. trivy's DS-0002 and DS-0026 both fired
-# on the first version of this file.
-FROM rust:1.97-slim@sha256:3b2879047d42784ca9403ad20c51ed3df361a50f1df96f5777d39b4e33aa65cd AS build
-WORKDIR /src
-COPY Cargo.toml Cargo.lock ./
-COPY crates ./crates
-RUN cargo build --release --locked --bin lab-cli
+# Class-representative fixture, not a dummy: a real binary built from
+# this workspace by scripts/oci-prepare.sh — natively, per architecture,
+# in the mise-pinned toolchain — and COPYed in. No build stage and no
+# compile in here, by rule (#295): the repro gate proved the
+# in-container cargo build nondeterministic while the pinned native
+# toolchain built the same crates bit-for-bit, so a Dockerfile that
+# compiles is the failure mode. `scratch` because the binary is
+# musl-static: no base userland means no base CVEs to triage, and
+# nothing left in the image that can vary — the image is a pure
+# function of one deterministic artifact.
+FROM scratch
+COPY dist/lab-cli /usr/local/bin/lab-cli
 
-FROM debian:trixie-slim@sha256:3a39a0592364683e6bab97937b72cad5a8fa6dcbbee90edb3bb48c7f8e94f258
-COPY --from=build /src/target/release/lab-cli /usr/local/bin/lab-cli
-
-# DS-0002: never root. A container escape from a root process is a host
-# compromise; from an unprivileged one it is much less.
-RUN useradd --system --no-create-home --shell /usr/sbin/nologin lab
-USER lab
+# DS-0002: never root. scratch has no /etc/passwd to useradd into, so
+# the user is numeric — 65534 (nobody), which a static binary needs no
+# lookup to run as.
+USER 65534:65534
 
 # DS-0026: the binary answering at all is the only meaningful liveness
 # signal a CLI image has.
