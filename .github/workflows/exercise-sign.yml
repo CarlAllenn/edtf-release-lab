@@ -71,9 +71,11 @@ jobs:
     # proven together by construction rather than kept in agreement by
     # hand. The previous shape — the digest repeated as a literal in the
     # verify commands — sat frozen at the signer's first commit while this
-    # line was bumped twice, and this repo deliberately carries no
-    # security/signer.pin for a lint to catch it against: a consumer has
-    # no verdict to render (#314).
+    # line was bumped twice (#314). No repo carries a second copy any more:
+    # the canon's own security/signer.pin went the same way once its
+    # Renovate manager split every bump into two unmergeable branches
+    # (.github#316 finding 2) — the uses: line is the single statement
+    # of the trusted signer everywhere, and everything derives from it.
     uses: monumental-archive/signer/.github/workflows/sign.yml@be5486980d5f779eaf5cfae1abc96ad56cf60869 # main
     with:
       subjects: ${{ needs.build.outputs.subjects }}
