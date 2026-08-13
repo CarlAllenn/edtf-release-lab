@@ -74,7 +74,7 @@ jobs:
     # line was bumped twice, and this repo deliberately carries no
     # security/signer.pin for a lint to catch it against: a consumer has
     # no verdict to render (#314).
-    uses: monumental-archive/signer/.github/workflows/sign.yml@2c64eee47bf7b83a807be4361326db588b91645b # main
+    uses: monumental-archive/signer/.github/workflows/sign.yml@be5486980d5f779eaf5cfae1abc96ad56cf60869 # main
     with:
       subjects: ${{ needs.build.outputs.subjects }}
     permissions:
@@ -107,7 +107,7 @@ jobs:
       # digest derived from this file's own sign.yml uses: line, never
       # written by hand (#314; lint:signer-pin reddens a literal).
       - name: Verify against GitHub's stored attestation
-        uses: monumental-archive/.github/.github/actions/verify-signed@0b1d19fd6daad133b9e5b850489079fe12f70adf # v1.18.0
+        uses: monumental-archive/.github/.github/actions/verify-signed@a567e3c97791dc623b5303e3d97ff75e390ee74a # v1.19.0
         with:
           files: out/fixture-one.txt out/fixture-two.txt
 
@@ -120,7 +120,7 @@ jobs:
           echo "path=${bundle}" >> "${GITHUB_OUTPUT}"
 
       - name: Verify offline against the returned bundle
-        uses: monumental-archive/.github/.github/actions/verify-signed@0b1d19fd6daad133b9e5b850489079fe12f70adf # v1.18.0
+        uses: monumental-archive/.github/.github/actions/verify-signed@a567e3c97791dc623b5303e3d97ff75e390ee74a # v1.19.0
         with:
           files: out/fixture-one.txt out/fixture-two.txt
           bundle: ${{ steps.bundle.outputs.path }}
