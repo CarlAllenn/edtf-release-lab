@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.24.0](https://github.com/monumental-archive/release-lab/compare/v0.23.0...v0.24.0) - 2026-08-13
+
+### Added
+
+- consume canon v1.22.2 ([#167](https://github.com/monumental-archive/release-lab/pull/167))
+
+### Fixed
+
+- serialise release runs on the workflow, not the commit ([#164](https://github.com/monumental-archive/release-lab/pull/164))
+
+### Miscellaneous
+
+- record the concept DOI from the first mint ([#166](https://github.com/monumental-archive/release-lab/pull/166))
+- update dependency monumental-archive/.github to v1.22.2 ([#168](https://github.com/monumental-archive/release-lab/pull/168))
+
 ## [0.23.0](https://github.com/monumental-archive/release-lab/compare/v0.22.1...v0.23.0) - 2026-08-13
 
 ### Added
