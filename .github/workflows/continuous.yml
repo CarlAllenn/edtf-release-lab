@@ -23,9 +23,10 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/continuous.yml@075888ca8edf295fc3e66e0e19a164e66f85580a # v1.16.0
+    uses: monumental-archive/.github/.github/workflows/continuous.yml@3599495433d1f691e3ca24374cf11a295b2fb675 # v1.16.1
     with:
       smoke-test: scripts/image-smoke.sh
+      prepare: scripts/oci-prepare.sh
     permissions:
       contents: read # build checks out this repository
       packages: write # push per-arch images and the manifest list
