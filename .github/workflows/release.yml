@@ -31,5 +31,11 @@ jobs:
       # workflow needs this for git-cliff's GitHub API calls. Omitting it
       # kills the run as startup_failure with no jobs and no log.
       contents: read # git-cliff's API calls, and the checkout
+      # Passed through to release.yml's tag job, where gitsign spends it
+      # on the keyless tag signature (.github#349 S4). New in canon
+      # v1.23.1: a caller must grant at least what the callee's jobs
+      # ask for, so the pin bump alone startup-failed this workflow in
+      # 1s with no jobs and no log (.github#354, measured here).
+      id-token: write # gitsign's keyless signature on the release tag
     secrets:
       app-private-key: ${{ secrets.TAG_MINT_APP_PRIVATE_KEY }}
