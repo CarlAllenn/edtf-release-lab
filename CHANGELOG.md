@@ -6,6 +6,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.22.0](https://github.com/monumental-archive/release-lab/compare/v0.21.1...v0.22.0) - 2026-08-13
+
+### Added
+
+- move the lab-cli compile out of the dockerfile (#295) ([#144](https://github.com/monumental-archive/release-lab/pull/144))
+
+### Fixed
+
+- pin exercise-sign's runner images to ubuntu-24.04 ([#142](https://github.com/monumental-archive/release-lab/pull/142))
+
+### Miscellaneous
+
+- update dependency monumental-archive/.github to v1.15.1 ([#143](https://github.com/monumental-archive/release-lab/pull/143))
+- update monumental-archive/signer digest to 1a28b69 ([#146](https://github.com/monumental-archive/release-lab/pull/146))
+- update dependency monumental-archive/.github to v1.16.0 ([#147](https://github.com/monumental-archive/release-lab/pull/147))
+- update dependency monumental-archive/.github to v1.16.1 ([#148](https://github.com/monumental-archive/release-lab/pull/148))
+
 ## [0.21.1](https://github.com/monumental-archive/release-lab/compare/v0.21.0...v0.21.1) - 2026-08-12
 
 ### Miscellaneous
