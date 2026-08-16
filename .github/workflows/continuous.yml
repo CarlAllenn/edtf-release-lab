@@ -3,17 +3,19 @@
 # deliberately: the same repository proves both archetypes, and the
 # continuous guard refusing tags while publish.yml refuses branches is
 # the pair of inverse guards doing their jobs.
+---
 name: continuous
 
-on:
+"on":
   push:
-    branches: [main]
+    branches:
+      - main
+
   schedule:
     # Wednesdays 06:00 UTC — the weekly remediation rebuild, refreshing
     # every base layer nothing can pin.
-    - cron: "0 6 * * 3"
-  workflow_dispatch:
-
+    - cron: 0 6 * * 3
+  workflow_dispatch: {}
 permissions: {}
 
 # Never two publishes racing; a fresher merge supersedes a queued rebuild.
@@ -23,7 +25,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/continuous.yml@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+    uses: monumental-archive/.github/.github/workflows/continuous.yml@901718863ebc61dffede5a8a687b5f33731b08cd # v1.31.0
     with:
       smoke-test: scripts/image-smoke.sh
       prepare: scripts/oci-prepare.sh
@@ -33,3 +35,4 @@ jobs:
       id-token: write # the signer mints the Sigstore identity
       attestations: write # the signer persists the provenance
       artifact-metadata: write # the signer creates the storage record
+...

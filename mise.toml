@@ -10,13 +10,40 @@ lockfile = true
 # by coverage:check, mirroring the test task's --exclude (lab-pg needs
 # a live postgres — the pgrx tests run in the class's own containers).
 COVERAGE_EXCLUDE = "lab-pg"
+# Same member, same reason, for lint:rust: lab-pg is a pgrx extension
+# whose features (pg14..pg18) are mutually exclusive, so --all-features
+# cannot compile it and it needs a live postgres regardless. Declared
+# rather than inherited from default-members, so a reviewer sees it.
+CLIPPY_EXCLUDE = "lab-pg"
+# Which nightly audit:fuzz runs the sanitized targets under (.github#445).
+# AddressSanitizer is cargo-fuzz's default and needs -Zsanitizer, which
+# stable refuses; the task selects this by name and never guesses. Dated,
+# never bare "nightly" — a moving channel is not a pinned input, and this
+# is the one pin in the org Renovate cannot bump.
+FUZZ_TOOLCHAIN = "nightly-2026-07-20"
+# How long each target fuzzes on the Monday cron. 300 rather than the
+# 60s floor: --careful buys extra checks per execution at roughly a
+# fifth of the throughput, and on a weekly cron for a public repo the
+# minutes are free — so buy the checks and the coverage, not one of them.
+FUZZ_SECONDS = "300"
 
 [tools]
 "aqua:rustwasm/wasm-pack" = "0.15.0"
 node = "24.19.0"
-# llvm-tools: build input of coverage:check (the ratchet), installed
-# with the toolchain, never mid-run.
-rust = { version = "1.97.1", components = "llvm-tools" }
+# Two toolchains, both locked by mise. The stable pin is what everything
+# builds and releases with; the dated nightly exists solely so audit:fuzz
+# can run libFuzzer under AddressSanitizer on the cron, which the gate
+# never touches. Components ride the pin so they install before any task
+# runs — never mid-run rustup: coverage:check asserts llvm-tools,
+# lint:rust asserts clippy and rustfmt.
+rust = [
+  { version = "1.97.1", components = "clippy,rustfmt,llvm-tools" },
+  # rust-src is not optional on the nightly: audit:fuzz runs `--careful`,
+  # which implies -Zbuild-std, which rebuilds the standard library from
+  # source and fails without it. Components ride the pin here for the
+  # same reason they do above — installed before any task runs.
+  { version = "nightly-2026-07-20", components = "rust-src" },
+]
 # Build input of the pgrx-extension class; must match the pgrx crate dep.
 "cargo:cargo-pgrx" = "0.19.2"
 # Build input of the rust build classes: auditable binaries (.dep-v0).

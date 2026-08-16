@@ -7,14 +7,14 @@
 # Three jobs, in the canonical order: a build that produces bytes and
 # hashes them, the signer that never sees the bytes, and a verification
 # performed the way a stranger would perform it.
+---
 name: exercise-sign
 
 # Run on demand. Not on push: every run mints a real Sigstore entry, and
 # the transparency log is append-only — proof should be deliberate, not a
 # by-product of touching this repository.
-on:
-  workflow_dispatch:
-
+"on":
+  workflow_dispatch: {}
 permissions: {}
 
 # A measurement is worth cancelling: only the newest push tells you
@@ -40,7 +40,6 @@ jobs:
           # every real release uses.
           printf 'lab fixture one, run %s\n' "${GITHUB_RUN_ID}" > out/fixture-one.txt
           printf 'lab fixture two, run %s\n' "${GITHUB_RUN_ID}" > out/fixture-two.txt
-
       - name: Compute the subject manifest
         id: hash
         run: |
@@ -53,7 +52,6 @@ jobs:
             echo "SUBJECTS_EOF"
           } >> "${GITHUB_OUTPUT}"
           printf '%s\n' "${manifest}"
-
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lab-fixtures
@@ -89,7 +87,10 @@ jobs:
 
   verify:
     name: Verify as a stranger would
-    needs: [build, sign]
+    needs:
+      - build
+      - sign
+
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -109,7 +110,7 @@ jobs:
       # digest derived from this file's own sign.yml uses: line, never
       # written by hand (#314; lint:signer-pin reddens a literal).
       - name: Verify against GitHub's stored attestation
-        uses: monumental-archive/.github/.github/actions/verify-signed@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+        uses: monumental-archive/.github/.github/actions/verify-signed@901718863ebc61dffede5a8a687b5f33731b08cd # v1.31.0
         with:
           files: out/fixture-one.txt out/fixture-two.txt
 
@@ -120,9 +121,9 @@ jobs:
           bundle=$(find bundle -name '*.jsonl' -o -name '*.json' | head -n 1)
           echo "bundle: ${bundle}"
           echo "path=${bundle}" >> "${GITHUB_OUTPUT}"
-
       - name: Verify offline against the returned bundle
-        uses: monumental-archive/.github/.github/actions/verify-signed@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+        uses: monumental-archive/.github/.github/actions/verify-signed@901718863ebc61dffede5a8a687b5f33731b08cd # v1.31.0
         with:
           files: out/fixture-one.txt out/fixture-two.txt
           bundle: ${{ steps.bundle.outputs.path }}
+...

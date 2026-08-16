@@ -2,12 +2,23 @@
 # (linters, versions, enforcement) arrives via the shared workflow and the
 # toolbelt it pins. Update the SHA when moving to a newer gate; once the
 # .github repo cuts releases, Renovate manages this pin like any other.
+---
 name: gate
 
-on:
+"on":
+  # `edited` included because the squash subject is the PR title:
+  # without it a title edit leaves a stale verdict standing
+  # (.github#427).
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -23,9 +34,10 @@ jobs:
       # default, so a shared workflow that gains a permission breaks
       # every silent caller as startup_failure with no log.
       contents: read # the gate checks out this repo and the toolbelt
-    uses: monumental-archive/.github/.github/workflows/ci.yml@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+    uses: monumental-archive/.github/.github/workflows/ci.yml@901718863ebc61dffede5a8a687b5f33731b08cd # v1.31.0
     secrets:
       # The badge feed, never the gate: absent, the upload job skips
       # clean. Token stays REQUIRED on the Codecov side — tokenless
       # ingest accepts forged reports from anyone (.github#316).
       codecov-token: ${{ secrets.CODECOV_TOKEN }}
+...

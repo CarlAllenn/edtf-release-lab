@@ -4,11 +4,14 @@
 #
 # The lab runs it as a rehearsal: everything happens except the crates.io
 # upload, and the release is left a draft.
+---
 name: publish
 
-on:
+"on":
   push:
-    tags: [v*]
+    tags:
+      - v*
+
   # Resume path. ALWAYS dispatch with --ref <tag>; the shared guard refuses
   # anything that is not a tag, because a branch ref would attest a moving
   # pointer and Sigstore is append-only.
@@ -23,7 +26,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+    uses: monumental-archive/.github/.github/workflows/publish.yml@901718863ebc61dffede5a8a687b5f33731b08cd # v1.31.0
     with:
       # The width proof, real: every class but rust-crate (the lab never
       # uploads to crates.io — that class's coexistence and dry-run shape
@@ -52,3 +55,4 @@ jobs:
     secrets:
       app-private-key: ${{ secrets.TAG_MINT_APP_PRIVATE_KEY }}
       zenodo-token: ${{ secrets.ZENODO_TOKEN }}
+...
