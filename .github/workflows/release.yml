@@ -3,11 +3,14 @@
 # the App-minted v* tag and draft release, all via the shared workflow.
 # Phase 2 (this repository's own publish workflow, triggered by the tag)
 # builds, proves and signs. See docs/release.md in monumental-archive/.github.
+---
 name: release
 
-on:
+"on":
   push:
-    branches: [main]
+    branches:
+      - main
+
   # Refresh the open Release PR when a publish completes. The PR is
   # opened on the push of the PREVIOUS release commit — before that
   # release has finished publishing — so anything derived from "the
@@ -17,7 +20,9 @@ on:
   # carried an upgrade path from the wrong version, burning the tag
   # (.github#358 seam 5). This re-derives it when the publish lands.
   release:
-    types: [published]
+    types:
+      - published
+
   # Recovery path: re-run the tag step against a release commit whose first
   # attempt failed. The shared workflow refuses anything else.
   workflow_dispatch: {}
@@ -34,7 +39,7 @@ concurrency:
 
 jobs:
   release:
-    uses: monumental-archive/.github/.github/workflows/release.yml@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+    uses: monumental-archive/.github/.github/workflows/release.yml@9d46486eb5df81c514e820108d12354c87cb3dd0 # v1.30.0
     permissions:
       # Required. A uses: job with no permissions block takes the
       # WORKFLOW-level default, not some ambient grant — and the shared
@@ -49,3 +54,4 @@ jobs:
       id-token: write # gitsign's keyless signature on the release tag
     secrets:
       app-private-key: ${{ secrets.TAG_MINT_APP_PRIVATE_KEY }}
+...

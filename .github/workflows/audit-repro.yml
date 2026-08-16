@@ -1,15 +1,15 @@
 # Weekly reproducibility audit: rebuild the latest release with the real
 # class workflow and prove the published bytes, via the shared org
 # workflow. Failure files an issue.
+---
 name: audit-repro
 
-on:
+"on":
   schedule:
     # Thursdays 06:00 UTC — its own day, after audit (Mon) and scorecard
     # (Tue), so one failure never masks another.
-    - cron: "0 6 * * 4"
-  workflow_dispatch:
-
+    - cron: 0 6 * * 4
+  workflow_dispatch: {}
 permissions: {}
 
 concurrency:
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   repro-extension:
-    uses: monumental-archive/.github/.github/workflows/repro-check.yml@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+    uses: monumental-archive/.github/.github/workflows/repro-check.yml@9d46486eb5df81c514e820108d12354c87cb3dd0 # v1.30.0
     with:
       class: pgrx-extension
       extension-crate-dir: crates/lab-pg
@@ -27,10 +27,11 @@ jobs:
       issues: write # a broken reproducibility claim must page
 
   repro:
-    uses: monumental-archive/.github/.github/workflows/repro-check.yml@9d7bb8eb4f40c304257ae58b1314d7778aa6a69f # v1.25.0
+    uses: monumental-archive/.github/.github/workflows/repro-check.yml@9d46486eb5df81c514e820108d12354c87cb3dd0 # v1.30.0
     with:
       class: rust-binary
       exclude: lab-pg
     permissions:
       contents: read # read the release, check out the tag
       issues: write # a broken reproducibility claim must page
+...

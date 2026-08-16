@@ -27,10 +27,32 @@ allow = [
 
 [bans]
 # A `*` requirement is an unpinned intention — deny. Duplicate transitive
-# versions are endemic and outside any one repo's control — warn, the one
-# deliberately non-maximal setting (reasoned in docs/dependency-track.md).
+# versions are a gate failure too (canon #445): the tree is something a
+# repo resolves, not something it tolerates, and the org now has no
+# deliberately non-maximal dependency setting (docs/dependency-track.md).
 wildcards = "deny"
-multiple-versions = "warn"
+multiple-versions = "deny"
+
+# ONE entry, and the canon's own check is what proved one is enough.
+# Every duplicate here — syn 2 vs 3, toml 0.9 vs 1.1, toml_datetime,
+# hashbrown, winnow, shlex, wasi — sits on either side of an ecosystem
+# major transition that pgrx's BUILD chain (bindgen, cargo_toml) has not
+# made while the rest of the workspace has. It is not the pg14..pg18
+# support: those are feature flags on one pgrx version, selecting which
+# Postgres headers to bind, and the lock holds exactly one pgrx.
+#
+# This was written as two entries, pgrx and pgrx-tests, on the reasoning
+# that lab-pg dev-depends on pgrx-tests directly so it is a sibling
+# rather than a child. True of the manifest, irrelevant to the tree:
+# pgrx-tests depends on pgrx, so its skip-tree already covers pgrx's
+# whole subtree, and `lint:deny` reported the pgrx entry as doing
+# nothing the first time it ran. Excluding lab-pg alone makes `cargo deny
+# check bans` pass, which is how we know the boundary sits here at all.
+# Delete this when pgrx's build chain reaches syn 3 / toml 1 — and the
+# gate will say so before anyone thinks to look.
+skip-tree = [
+  { crate = "pgrx-tests", reason = "the pgrx build and test chain lags an ecosystem major transition (syn 2, toml 0.9, wasi 0.11); upstream's to resolve, and lab-pg is the only member affected" },
+]
 
 [sources]
 # Where dependencies come from is a gated invariant: crates.io only.
