@@ -40,7 +40,6 @@ jobs:
           # every real release uses.
           printf 'lab fixture one, run %s\n' "${GITHUB_RUN_ID}" > out/fixture-one.txt
           printf 'lab fixture two, run %s\n' "${GITHUB_RUN_ID}" > out/fixture-two.txt
-
       - name: Compute the subject manifest
         id: hash
         run: |
@@ -53,7 +52,6 @@ jobs:
             echo "SUBJECTS_EOF"
           } >> "${GITHUB_OUTPUT}"
           printf '%s\n' "${manifest}"
-
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lab-fixtures
@@ -123,7 +121,6 @@ jobs:
           bundle=$(find bundle -name '*.jsonl' -o -name '*.json' | head -n 1)
           echo "bundle: ${bundle}"
           echo "path=${bundle}" >> "${GITHUB_OUTPUT}"
-
       - name: Verify offline against the returned bundle
         uses: monumental-archive/.github/.github/actions/verify-signed@9d46486eb5df81c514e820108d12354c87cb3dd0 # v1.30.0
         with:
