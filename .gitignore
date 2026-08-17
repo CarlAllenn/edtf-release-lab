@@ -1,2 +1,4 @@
 /target
 dist/
+coverage.txt
+lcov.info
