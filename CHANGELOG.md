@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.25.1](https://github.com/monumental-archive/release-lab/compare/v0.25.0...v0.25.1) - 2026-08-17
+
+### Miscellaneous
+
+- update dependency monumental-archive/.github to v1.35.1 ([#206](https://github.com/monumental-archive/release-lab/pull/206))
+
+### Reverted
+
+- remove the Go fixture, restore the pre-Go shape ([#208](https://github.com/monumental-archive/release-lab/pull/208))
+
 ## [0.25.0](https://github.com/monumental-archive/release-lab/compare/v0.24.4...v0.25.0) - 2026-08-17
 
 ### Added
