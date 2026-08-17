@@ -26,16 +26,17 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@6820f6ca7c9ccf45f918a632a0614ef8a7906438 # v1.32.1
+    uses: monumental-archive/.github/.github/workflows/publish.yml@eec926bb3951cfd22901f6b0347ffb7e5c115d0a # v1.33.1
     with:
       # The width proof, real: every class but rust-crate (the lab never
       # uploads to crates.io — that class's coexistence and dry-run shape
       # were proven on v0.15.3), every supported PG major for real. npm,
       # GHCR, per-major extension images, real version DOI, immutable release.
-      classes: rust-binary,oci-image,wasm-npm,pgrx-extension
+      classes: rust-binary,go-binary,oci-image,wasm-npm,pgrx-extension
       smoke-test: scripts/image-smoke.sh
       prepare: scripts/oci-prepare.sh
       binary-smoke-test: scripts/binary-smoke.sh
+      go-smoke-test: scripts/go-binary-smoke.sh
       exclude: lab-pg
       crate-dir: crates/lab-wasm
       npm-scope: monumental-archive
