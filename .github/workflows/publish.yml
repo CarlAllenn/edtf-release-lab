@@ -32,11 +32,10 @@ jobs:
       # uploads to crates.io — that class's coexistence and dry-run shape
       # were proven on v0.15.3), every supported PG major for real. npm,
       # GHCR, per-major extension images, real version DOI, immutable release.
-      classes: rust-binary,go-binary,oci-image,wasm-npm,pgrx-extension
+      classes: rust-binary,oci-image,wasm-npm,pgrx-extension
       smoke-test: scripts/image-smoke.sh
       prepare: scripts/oci-prepare.sh
       binary-smoke-test: scripts/binary-smoke.sh
-      go-smoke-test: scripts/go-binary-smoke.sh
       exclude: lab-pg
       crate-dir: crates/lab-wasm
       npm-scope: monumental-archive
