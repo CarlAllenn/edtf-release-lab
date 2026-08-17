@@ -6,6 +6,43 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.25.0](https://github.com/monumental-archive/release-lab/compare/v0.24.4...v0.25.0) - 2026-08-17
+
+### Added
+
+- conform to canon v1.30.0 — clippy, rustfmt, sanitized fuzzing ([#192](https://github.com/monumental-archive/release-lab/pull/192))
+- add the Go fixture and rehearse the go-binary class ([#199](https://github.com/monumental-archive/release-lab/pull/199))
+- re-add the Go fixture to witness the sbom guard ([#204](https://github.com/monumental-archive/release-lab/pull/204))
+
+### Dependencies
+
+- lock file maintenance ([#197](https://github.com/monumental-archive/release-lab/pull/197))
+
+### Fixed
+
+- name the baseline criteria as the badge app expects ([#185](https://github.com/monumental-archive/release-lab/pull/185))
+- put the URL back in two URL-required justifications ([#188](https://github.com/monumental-archive/release-lab/pull/188))
+
+### Miscellaneous
+
+- derive .bestpractices.json from the canon's entry ([#183](https://github.com/monumental-archive/release-lab/pull/183))
+- update dependency monumental-archive/.github to v1.25.0 ([#184](https://github.com/monumental-archive/release-lab/pull/184))
+- wear the best-practices and REUSE badges ([#187](https://github.com/monumental-archive/release-lab/pull/187))
+- update monumental-archive/signer digest to da65e70 ([#189](https://github.com/monumental-archive/release-lab/pull/189))
+- move the source-attest pin to the stele emitter (v1.29.1) ([#191](https://github.com/monumental-archive/release-lab/pull/191))
+- update dependency monumental-archive/.github to v1.26.2 ([#190](https://github.com/monumental-archive/release-lab/pull/190))
+- update dependency monumental-archive/.github to v1.32.0 ([#194](https://github.com/monumental-archive/release-lab/pull/194))
+- consume canon v1.32.1 and drop the configs it delivers ([#195](https://github.com/monumental-archive/release-lab/pull/195))
+- update monumental-archive/signer digest to 87f89fc ([#196](https://github.com/monumental-archive/release-lab/pull/196))
+- update monumental-archive/signer digest to d50cdb3 ([#198](https://github.com/monumental-archive/release-lab/pull/198))
+- update dependency monumental-archive/.github to v1.33.1 ([#200](https://github.com/monumental-archive/release-lab/pull/200))
+- update monumental-archive/signer digest to 3b69f52 ([#202](https://github.com/monumental-archive/release-lab/pull/202))
+- update first-party canon ([#203](https://github.com/monumental-archive/release-lab/pull/203))
+
+### Reverted
+
+- remove the Go fixture, restore the pre-Go shape ([#201](https://github.com/monumental-archive/release-lab/pull/201))
+
 ## [0.24.4](https://github.com/monumental-archive/release-lab/compare/v0.24.3...v0.24.4) - 2026-08-13
 
 ### Miscellaneous

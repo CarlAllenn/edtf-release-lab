@@ -715,7 +715,7 @@ dependencies = [
 
 [[package]]
 name = "lab-cli"
-version = "0.24.4"
+version = "0.25.0"
 dependencies = [
  "lab-core",
  "mimalloc",
@@ -723,11 +723,11 @@ dependencies = [
 
 [[package]]
 name = "lab-core"
-version = "0.24.4"
+version = "0.25.0"
 
 [[package]]
 name = "lab-pg"
-version = "0.24.4"
+version = "0.25.0"
 dependencies = [
  "lab-core",
  "pgrx",
@@ -736,7 +736,7 @@ dependencies = [
 
 [[package]]
 name = "lab-wasm"
-version = "0.24.4"
+version = "0.25.0"
 dependencies = [
  "lab-core",
  "wasm-bindgen",
