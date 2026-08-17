@@ -26,23 +26,10 @@ FUZZ_TOOLCHAIN = "nightly-2026-07-20"
 # fifth of the throughput, and on a weekly cron for a public repo the
 # minutes are free — so buy the checks and the coverage, not one of them.
 FUZZ_SECONDS = "300"
-# Hermetic Go, stated where the fixture is built and tested locally: no
-# cgo (one compiler, static output) and no toolchain auto-download (the
-# pin below is the only toolchain; a disagreeing go.mod directive fails
-# loudly instead of fetching another). The go-binary class states the
-# same two values at its own jobs — a release leg must never inherit
-# hermeticity from a caller — so these serve the gate and keep the two
-# surfaces saying the same thing.
-CGO_ENABLED = "0"
-GOTOOLCHAIN = "local"
 
 [tools]
 "aqua:rustwasm/wasm-pack" = "0.15.0"
 node = "24.19.0"
-# Build input of the go-binary class (stele#7): cmd/lab-go, built on
-# four native legs and repro-gated like every other class. Exact-pinned
-# like every build input; the class asserts its presence, never installs.
-go = "1.26.5"
 # Two toolchains, both locked by mise. The stable pin is what everything
 # builds and releases with; the dated nightly exists solely so audit:fuzz
 # can run libFuzzer under AddressSanitizer on the cron, which the gate
@@ -66,11 +53,5 @@ rust = [
 "cargo:cargo-fuzz" = "0.13.2"
 
 [tasks.test]
-description = "The fixture crates and the Go module must build and pass — they are what the shared workflows execute against"
-# Both languages, because the lab now ships artifacts from both: a test
-# task that ran one of them would let the other's fixture rot until a
-# release leg found it. -race is deliberately absent from the Go leg —
-# it needs cgo on linux (stele#1) and CGO_ENABLED=0 above is the shape
-# the go-binary class ships; the race detector belongs to a repo whose
-# own code needs it, not to a fixture proving a release path.
-run = ["cargo test --workspace --locked --exclude lab-pg", "go test ./..."]
+description = "The fixture crates must build and pass — they are what the shared workflows execute against"
+run = "cargo test --workspace --locked --exclude lab-pg"
