@@ -43,9 +43,10 @@ jobs:
     permissions:
       # Required. A uses: job with no permissions block takes the
       # WORKFLOW-level default, not some ambient grant — and the shared
-      # workflow needs this for git-cliff's GitHub API calls. Omitting it
-      # kills the run as startup_failure with no jobs and no log.
-      contents: read # git-cliff's API calls, and the checkout
+      # workflow needs this to read the commits it derives the version
+      # from. Omitting it kills the run as startup_failure with no jobs
+      # and no log.
+      contents: read # the version derivation's history read, and the checkout
       # Passed through to release.yml's tag job, where gitsign spends it
       # on the keyless tag signature (.github#349 S4). New in canon
       # v1.23.1: a caller must grant at least what the callee's jobs
