@@ -41,6 +41,12 @@ jobs:
       npm-scope: monumental-archive
       extension-crate-dir: crates/lab-pg
       pg-majors: 14,15,16,17,18
+      # The shipped artifacts, declared (#492 / canon #529): each derives
+      # its own inventory — the resolved lock scoped to the package that
+      # ships it — and the release SBOM becomes the aggregated view. The
+      # binary and the wasm package name their crates; the pgrx per-major
+      # inventories follow when stele#126 releases (pgrx: kind).
+      sbom-artifacts: cargo:lab-cli,cargo:lab-wasm,cargo:lab-pg
       mint-doi: true
       dry-run: false # the full-width proof in substance
     permissions:
