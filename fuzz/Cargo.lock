@@ -55,7 +55,7 @@ dependencies = [
 
 [[package]]
 name = "lab-core"
-version = "0.25.2"
+version = "0.25.3"
 
 [[package]]
 name = "libc"
