@@ -3,9 +3,9 @@
 <!-- badges:begin -->
 [![ci](https://github.com/monumental-archive/release-lab/actions/workflows/gate.yml/badge.svg)](https://github.com/monumental-archive/release-lab/actions/workflows/gate.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/monumental-archive/release-lab/badge)](https://scorecard.dev/viewer/?uri=github.com/monumental-archive/release-lab)
-[![SLSA build](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmonumental-archive%2F.github%2Flevels%2Frelease-lab%2Fbuild.shield.json)](https://raw.githubusercontent.com/monumental-archive/.github/levels/release-lab/build.report.json)
-[![SLSA source](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmonumental-archive%2F.github%2Flevels%2Frelease-lab%2Fsource.shield.json)](https://raw.githubusercontent.com/monumental-archive/.github/levels/release-lab/source.report.json)
-[![SLSA dependency](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmonumental-archive%2F.github%2Flevels%2Frelease-lab%2Fdependency.shield.json)](https://raw.githubusercontent.com/monumental-archive/.github/levels/release-lab/dependency.report.json)
+[![SLSA build](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmonumental-archive%2Frelease-lab%2Flevels%2Frelease-lab%2Fbuild.shield.json)](https://raw.githubusercontent.com/monumental-archive/release-lab/levels/release-lab/build.report.json)
+[![SLSA source](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmonumental-archive%2Frelease-lab%2Flevels%2Frelease-lab%2Fsource.shield.json)](https://raw.githubusercontent.com/monumental-archive/release-lab/levels/release-lab/source.report.json)
+[![SLSA dependency](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmonumental-archive%2Frelease-lab%2Flevels%2Frelease-lab%2Fdependency.shield.json)](https://raw.githubusercontent.com/monumental-archive/release-lab/levels/release-lab/dependency.report.json)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14067/badge)](https://www.bestpractices.dev/projects/14067)
 [![OpenSSF Baseline](https://www.bestpractices.dev/projects/14067/baseline)](https://www.bestpractices.dev/projects/14067)
 [![REUSE status](https://api.reuse.software/badge/github.com/monumental-archive/release-lab)](https://api.reuse.software/info/github.com/monumental-archive/release-lab)
