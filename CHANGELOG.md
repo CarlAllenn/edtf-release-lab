@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 over the lab crates' public APIs (this is a test bed; the promise is nominal).
 
+## [0.25.4](https://github.com/monumental-archive/release-lab/compare/v0.25.3...v0.25.4) - 2026-08-20
+
+### Fixed
+
+- build and prove on canon v1.46.0 ([#228](https://github.com/monumental-archive/release-lab/pull/228))
+
+### Dependencies
+
+- update github/codeql-action action to v4.37.7 ([#230](https://github.com/monumental-archive/release-lab/pull/230))
+
 ## [0.25.3](https://github.com/monumental-archive/release-lab/compare/v0.25.2...v0.25.3) - 2026-08-19
 
 ### Fixed
