@@ -1,4 +1,4 @@
-use super::{PHASE2_REHEARSAL, banner, parse_version_marker};
+use super::{PHASE2_REHEARSAL, TARGET_SCOPE_CHECK, banner, parse_version_marker};
 
 // `missing_panics_doc` reaches private items because the canon sets
 // `check-private-items = true`, which is right for private helpers and
@@ -24,6 +24,7 @@ fn banner_renders() {
 #[test]
 fn markers_parse() {
     assert_eq!(parse_version_marker(PHASE2_REHEARSAL), Some((0, 4, 0)));
+    assert_eq!(parse_version_marker(TARGET_SCOPE_CHECK), Some((0, 27, 0)));
     assert_eq!(parse_version_marker("v1.20.0"), Some((1, 20, 0)));
     assert_eq!(parse_version_marker("1.2.3"), None);
     assert_eq!(parse_version_marker("v1.2"), None);

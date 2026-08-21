@@ -26,6 +26,13 @@ pub const PHASE2_REHEARSAL_3: &str = "v0.6.0";
 /// Fourth rehearsal marker.
 pub const PHASE2_REHEARSAL_4: &str = "v0.7.0";
 
+/// Target-scope marker.
+///
+/// The release that first types every build subject with the target that
+/// produced it, so a rebuild is judged against the targets its caller
+/// declared rather than against the whole class (.github#637).
+pub const TARGET_SCOPE_CHECK: &str = "v0.27.0";
+
 /// The fixture's one value, returned so the build classes have something
 /// to link and the tests something to assert.
 // Called once inside this crate, by `banner`; the other callers are
