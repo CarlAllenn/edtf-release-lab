@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@abb114f4943db31078d2784e14b61bb69da39862 # v1.58.7
+    uses: monumental-archive/.github/.github/workflows/publish.yml@83f568030a422daf3081852236c66e5a674ce61f # v1.58.9
     with:
       # THIS RELEASE IS THE oci-image-ONLY WIDTH CELL (#253). The
       # full-width declaration is preserved verbatim, one line down, and
