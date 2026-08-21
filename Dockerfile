@@ -1,5 +1,5 @@
 # Class-representative fixture, not a dummy: a real binary built from
-# this workspace by scripts/oci-prepare.sh — natively, per architecture,
+# this workspace by the oci-image class's own build — natively, per architecture,
 # in the mise-pinned toolchain — and COPYed in. No build stage and no
 # compile in here, by rule (#295): the repro gate proved the
 # in-container cargo build nondeterministic while the pinned native

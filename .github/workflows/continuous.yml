@@ -28,7 +28,11 @@ jobs:
     uses: monumental-archive/.github/.github/workflows/continuous.yml@abb114f4943db31078d2784e14b61bb69da39862 # v1.58.7
     with:
       smoke-test: scripts/image-smoke.sh
-      prepare: scripts/oci-prepare.sh
+      # Declared, not scripted (.github#775) — the same input the publish
+      # stub carries. This archetype reuses the oci-image class's build
+      # wholesale, so an input the class takes and this stub drops is a
+      # Dockerfile whose COPY source never gets staged (.github#302).
+      binary-crate: crates/lab-cli
     permissions:
       contents: read # build checks out this repository
       packages: write # push per-arch images and the manifest list
