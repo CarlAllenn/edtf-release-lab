@@ -11,6 +11,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/monumental-archive/release-lab)](https://api.reuse.software/info/github.com/monumental-archive/release-lab)
 [![coverage](https://codecov.io/gh/monumental-archive/release-lab/branch/main/graph/badge.svg)](https://codecov.io/gh/monumental-archive/release-lab)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21914272.svg)](https://doi.org/10.5281/zenodo.21914272)
+[![npm](https://img.shields.io/npm/v/%40monumental-archive%2Flab-wasm.svg)](https://www.npmjs.com/package/@monumental-archive/lab-wasm)
 [![ghcr release-lab](https://img.shields.io/badge/ghcr.io-monumental--archive%2Frelease--lab-blue)](https://github.com/orgs/monumental-archive/packages/container/package/release-lab)
 [![ghcr lab-pg](https://img.shields.io/badge/ghcr.io-monumental--archive%2Flab--pg-blue)](https://github.com/orgs/monumental-archive/packages/container/package/lab-pg)
 [![fair-software](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8F-green)](https://fair-software.eu)

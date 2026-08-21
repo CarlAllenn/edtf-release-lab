@@ -26,29 +26,22 @@ concurrency:
 
 jobs:
   publish:
-    uses: monumental-archive/.github/.github/workflows/publish.yml@abb114f4943db31078d2784e14b61bb69da39862 # v1.58.7
+    uses: monumental-archive/.github/.github/workflows/publish.yml@83bfefbe282e33ece37eebf3af6db62450c24776 # v1.58.11
     with:
-      # THIS RELEASE IS THE oci-image-ONLY WIDTH CELL (#253). The
-      # full-width declaration is preserved verbatim, one line down, and
-      # the NEXT release restores it — that is the whole mechanism, and
-      # it is deliberately a release rather than new machinery.
+      # The width proof, real: every class but rust-crate (the lab never
+      # uploads to crates.io — that class's coexistence and dry-run shape
+      # were proven on v0.15.3), every supported PG major for real. npm,
+      # GHCR, per-major extension images, real version DOI, immutable release.
       #
-      #   classes: rust-binary,oci-image,wasm-npm,pgrx-extension
-      #
-      # What the cell proves that full width cannot: the CLASS-ALONE
-      # path. A repository releasing through oci-image alone, tracking
-      # Cargo.lock, is the shape that could not publish at all until
-      # .github#775 — the union SBOM is folded from per-artifact plans,
-      # and until the class emitted one this release refused (#773,
-      # burned on iiif-server v0.2.0). In the full-width run the
-      # rust-binary leg carries a plan, so that branch is never taken
-      # and the blind spot is structural, not accidental.
-      #
-      # A later width proof, never a gate on a consumer: iiif-server
-      # proved this path in production at v0.2.2 before this cell
-      # existed. What this adds is regression coverage that does not
-      # wait for a consumer to be mid-release.
-      classes: oci-image
+      # RESTORED after the oci-image-only cell (#253). v0.28.0 published
+      # with `classes: oci-image` alone — the class-alone path, which no
+      # full-width run can exercise, because the rust-binary leg carries
+      # an inventory plan and the aggregator therefore never takes the
+      # branch that refused iiif-server v0.2.0 (.github#773). It
+      # published: sbom-image-lab-cli-0.28.0.spdx.json beside the union,
+      # per-arch digests reproduced, verdict signed. Cutting the cell
+      # again is one line and this comment.
+      classes: rust-binary,oci-image,wasm-npm,pgrx-extension
       smoke-test: scripts/image-smoke.sh
       # Declared, not scripted (.github#775): the class builds this crate
       # through the same definition the rust-binary class compiles with
