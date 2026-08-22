@@ -34,7 +34,7 @@ jobs:
       # default, so a shared workflow that gains a permission breaks
       # every silent caller as startup_failure with no log.
       contents: read # the gate checks out this repo and the toolbelt
-    uses: monumental-archive/.github/.github/workflows/ci.yml@83bfefbe282e33ece37eebf3af6db62450c24776 # v1.58.11
+    uses: monumental-archive/.github/.github/workflows/ci.yml@f0694b0f2bf8a960f7bd139b475c3486d25ac924 # v1.59.0
     secrets:
       # The badge feed, never the gate: absent, the upload job skips
       # clean. Token stays REQUIRED on the Codecov side — tokenless
